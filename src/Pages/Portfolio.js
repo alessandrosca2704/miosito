@@ -14,7 +14,7 @@ export default function Portfolio() {
       id: 2,
       title: "Web App per creazione di Pg in Dungeon & Dragons 5e",
       desc: "Gestione di grandi db ed interattività user-friendly, sviluppata in React + Node.js.",
-      img: "/images/progetti/web1.jpg",
+      img: "/images/Portfolio/workinprogress.jpg",
       link: "/portfolio/webapp"
     },
     {
