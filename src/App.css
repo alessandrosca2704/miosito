@@ -1,0 +1,62 @@
+.App {
+  text-align: center;
+}
+:root { --page-bg: #f0f2f5; }
+body{ 
+  font-family:Arial, Helvetica, sans-serif ;
+  margin: 0;
+  padding: 5%;
+  background:var(--page-bg);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+nav, main , footer {
+  padding: 20px;
+  text-align: center;
+}
+main{
+  flex: 1;
+}
+.topbar{
+display: flex;
+align-items: center;
+border-bottom: 1px solid rgb(116, 116, 116);
+
+
+}
+.topbarIcon{
+  display: table;
+  margin-right: auto;
+  margin-left: auto;
+}
+header{
+  min-height: 50px;
+}
+header a{
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+ 
+  color: black;
+}
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.Chisono{
+  text-align: right;
+}
+footer{
+  min-height: 50px;
+  
+}

@@ -1,0 +1,137 @@
+.PulsantiS{
+      appearance: none;
+  border: 0;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 20;
+  margin: 1%;
+  border-width: 10%;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(26, 26, 26, 0.05);
+}
+
+.project{
+    display:flex;
+    align-items: center;
+}
+/* --- Come lavoro (process) --- */
+.process { background:#f0f2f5; padding: 56px 20px; }
+.process h2 { text-align: center; margin-bottom: 20px; }
+
+.process-grid {
+  list-style: none;
+  padding: 0; margin: 0 auto;
+  display: grid; gap: 16px;
+  max-width: 1100px;
+  grid-template-columns: 1fr;
+}
+
+.process-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
+  position: relative;
+}
+
+.process-badge {
+  position: absolute; top: 14px; right: 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-weight: 800; color: #fff; background: #111827;
+}
+
+.process-card h3 { margin: 6px 0 6px; font-size: 18px; }
+.process-card p { margin: 0; color: #6b7280; }
+
+@media (min-width: 768px) {
+  .process-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* === HERO SERVIZI === */
+.services-hero {
+  background: linear-gradient(180deg, #f0f2f5 0%, #f0f2f5 100%);
+  border-bottom: 1px solid #000000;
+}
+.services-hero__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 20px 32px;
+  text-align: center;
+}
+.services-hero h1 {
+  font-size: clamp(26px, 4vw, 40px);
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+.services-hero__sub {
+  max-width: 780px;
+  margin: 0 auto 18px;
+  color: #6b7280;
+  font-size: clamp(16px, 2.2vw, 18px);
+}
+
+/* bullets */
+.services-bullets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 18px;
+}
+.services-bullets li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+/* CTA */
+.services-cta {
+  display: inline-flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.btn.secondary {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform .1s ease, filter .2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+.btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.btn.secondary { background: #ffffff; color: #111827; border: 1px solid #e5e7eb; }
+
+/* badges */
+.services-badges {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.pill { padding: 8px 12px; border-radius: 999px; font-weight: 600; font-size: 14px; }
+.pill.primary { background: #111827; color: #fff; }
+.pill.ok { background: #E8F5E9; color: #14532d; border: 1px solid #cbe9cf; }
+
+/* responsive padding */
+@media (min-width: 900px) {
+  .services-hero__inner { padding: 64px 20px 40px; }
+}

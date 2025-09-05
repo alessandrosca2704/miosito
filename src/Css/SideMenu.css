@@ -1,0 +1,138 @@
+/* Pulsante hamburger (posizionalo dove vuoi, es. nell'header) */
+.hamburger {
+  appearance: none;
+  border: 0;
+  background: #2e2e2e;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 18px;
+  border-bottom: 10%;
+  cursor: pointer;
+}
+.bottons{
+    border: 0;
+}
+
+/* Overlay sfocato/oscuro dietro al drawer */
+.sidemenu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  backdrop-filter: none;
+  pointer-events: none;
+  transition: background .2s ease;
+  z-index: 50;
+}
+.sidemenu-overlay.show {
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(1px);
+  pointer-events: auto;
+}
+
+/* Drawer */
+.sidemenu-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  max-width: 85vw;
+  height: 100dvh;
+  background: #ffffff;
+  box-shadow: 2px 0 18px rgba(0,0,0,.18);
+  transform: translateX(-102%);
+  transition: transform .25s ease;
+  display: flex;
+  flex-direction: column;
+}
+.sidemenu-drawer.open { transform: translateX(0); }
+
+.sidemenu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.brand { font-weight: 700; }
+.close-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sidemenu-nav {
+  padding: 10px 8px;
+  overflow: auto;
+  flex: 1;
+}
+.sidemenu-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  
+  flex-direction: column;
+}
+.sidemenu-nav li { margin: 4px 0; }
+.navlink {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #111827;
+  text-decoration: none;
+  font-weight: 500;
+}
+.navlink:hover { background: #f3f4f6; }
+.navlink.active { background: #111827; color: #fff; }
+
+.sidemenu-footer {
+  padding: 10px 16px;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+.menu-root { list-style: none; margin: 0; padding: 0; }
+.group { margin: 4px 0; }
+
+/* riga padre con link + chevron */
+.group-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.chevron {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* SUBMENU IN COLONNA */
+.submenu {
+  list-style: none;
+  margin: 4px 0 8px 0;
+  padding-left: 12px;          /* indentazione */
+  border-left: 2px solid #eee; /* guida visiva */
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+}
+.submenu.open { display: flex; }
+
+.subnavlink {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 500;
+}
+.subnavlink:hover { background: #f3f4f6; }
+.subnavlink.active { background: #111827; color: #fff; }

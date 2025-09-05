@@ -1,0 +1,96 @@
+.imgnav-wrap {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.imgnav-scroller {
+  overflow-x: auto;
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE/Edge */
+  scroll-snap-type: x mandatory;
+  scroll-padding: 12px;
+}
+.imgnav-scroller::-webkit-scrollbar { display: none; }
+
+.imgnav-list {
+  display: inline-flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.imgnav-item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+/* Card immagine full */
+.navcard {
+  position: relative;
+  display: block;
+  width: 160px;               /* regola la larghezza della tile */
+  aspect-ratio: 4 / 3;        /* mantiene proporzioni */
+  border-radius: 14px;
+  overflow: hidden;
+  outline: 0;
+  box-shadow: 0 1px 2px rgba(243, 242, 242, 0.432);
+  transform: translateZ(0);   /* perf animazioni */
+}
+.navcard:hover .navcard-img { transform: scale(1.03); }
+.navcard:focus-visible { box-shadow: 0 0 0 3px #11182722; }
+
+.navcard-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .25s ease;
+  display: block;
+}
+
+/* Etichetta in overlay */
+.navcard-label {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fcfcfc;
+  backdrop-filter: blur(6px);
+  background: linear-gradient(0deg, rgba(59, 86, 238, 0.55), rgba(18, 45, 165, 0.589));
+}
+
+/* Highlight della rotta attiva */
+.navcard.active {
+  outline: 2px solid #ffffff;
+  outline-offset: 0;
+}
+
+/* Frecce */
+.imgnav-arrow {
+  appearance: none;
+  border: none;
+  background: #f3f4f6;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background .2s ease, transform .1s ease, opacity .2s ease;
+}
+.imgnav-arrow:hover { background: #e5e7eb; transform: translateY(-1px); }
+.imgnav-arrow:disabled { opacity: .35; cursor: default; transform: none; }
+
+@media (max-width: 640px) {
+  .navcard { width: 132px; }     /* più piccole su mobile */
+}

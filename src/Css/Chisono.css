@@ -1,0 +1,72 @@
+/* ===== Layout base ===== */
+.about { padding: 28px 20px 56px; max-width: 1100px; margin: 0 auto; }
+.about h1, .about h2 { letter-spacing: -0.02em; }
+.about p { color: #6b7280; }
+
+/* ===== Intro ===== */
+.about-hero h1 { font-size: clamp(26px, 4vw, 40px); margin: 0 0 6px; }
+.about-hero p  { margin: 0 0 20px; }
+
+/* ===== Card servizi ===== */
+.about-services {
+  display: grid; gap: 14px; margin: 18px 0 26px;
+  grid-template-columns: 1fr;
+}
+.about-card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+  padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
+  display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start;
+}
+.about-ic { font-size: 22px; line-height: 1; }
+.about-card h3 { margin: 2px 0 6px; font-size: 18px; }
+.about-card p  { margin: 0; }
+
+/* ===== Stack (chips) ===== */
+.about-stack { margin: 30px 0 8px; }
+.about-stack h2 { margin-bottom: 10px; }
+.about-chips {
+    
+  display: flex; flex-wrap: wrap; gap: 10px;
+  list-style: none; padding: 0; margin: 0;
+}
+.about-chip {
+  padding: 8px 12px; border-radius: 999px; font-weight: 600;
+  background: #ffffff; border: 1px solid #e5e7eb; color: #111827;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+/* ===== Timeline ===== */
+.about-timeline { margin: 30px 0 6px; }
+.about-timeline h2 { margin-bottom: 10px; }
+.about-steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.about-step {
+  position: relative; display: grid; grid-template-columns: auto 1fr; gap: 12px;
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 14px;
+}
+.about-badge {
+  width: 28px; height: 28px; border-radius: 50%; background: #111827; color: #fff;
+  display: grid; place-items: center; font-weight: 800; font-size: 14px; margin-top: 2px;
+}
+.about-step h4 { margin: 0 0 4px; }
+.about-step p  { margin: 0; }
+.about-step li  { margin: 0; }
+
+/* ===== CTA ===== */
+.about-cta { text-align: center; margin-top: 36px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+.about-cta h2 { margin: 0 0 6px; }
+.about-cta p  { margin: 0 0 14px; }
+.about-cta-actions { display: inline-flex; gap: 12px; flex-wrap: wrap; }
+
+.about-btn {
+  display: inline-block; padding: 10px 16px; border-radius: 999px;
+  background: #f8fafc; color: #111827; border: 1px solid #e5e7eb; text-decoration: none;
+  font-weight: 700; transition: transform .1s ease, filter .2s ease;
+}
+.about-btn:hover { transform: translateY(-1px); filter: brightness(1.04); }
+.about-btn--primary { background: #111827; color: #fff; border-color: #111827; }
+
+/* ===== Responsive ===== */
+@media (min-width: 760px) {
+  .about-services { grid-template-columns: repeat(3, 1fr); }
+  .about-steps { grid-template-columns: repeat(3, 1fr); }
+}

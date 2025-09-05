@@ -1,0 +1,57 @@
+.stickybar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 10px env(safe-area-inset-left, 16px) calc(10px + env(safe-area-inset-bottom, 0px)) env(safe-area-inset-right, 16px);
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Bottoni */
+.sb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #111827;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: transform .08s ease, filter .2s ease, background .2s ease;
+}
+.sb-btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+.sb-btn svg { display:block; }
+
+.sb-btn.primary {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+
+/* Mobile: meno bottoni visibili, testo più corto */
+@media (max-width: 520px) {
+  .sb-btn span {
+    max-width: 11ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Per evitare che la barra copra il contenuto in basso */
+.has-sticky-bottom {
+  padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+}

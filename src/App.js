@@ -1,0 +1,82 @@
+import{BrowserRouter as Router , Routes , Route, useLocation} from 'react-router-dom';
+import './App.css';
+import Header  from './component/Header';
+import Navbar from './component/Navbar';
+import Main from './component/Main';
+import Footer from './component/Footer';
+import Home from './Pages/Home';
+import Chisono from './Pages/Chisono';
+import Contatti from './Pages/Contatti';
+import Iot from './Pages/Iot';
+import Portfolio from './Pages/Portfolio';
+import Servizi from './Pages/Servizi';
+import Webapp from './Pages/Web-app';
+import NavbarCarouselImgs from './component/NavbarCarouselImgs';
+import SideMenu from './component/SideMenu';
+import StickyContactBar from './component/StickyContactBar';
+import { useEffect } from 'react';
+import ScrollToTop from './component/ScrollToTop';
+
+function AnimInitOnRouteChange() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // aspetta il render della nuova pagina
+    const id = requestAnimationFrame(() => {
+      const els = document.querySelectorAll(".reveal"); // elementi della pagina corrente
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target); // anima una volta
+          }
+        });
+      }, { threshold: 0.08, rootMargin: "0px 0px -5% 0px" });
+
+      // (opzionale) se vuoi che rianimini ogni volta che entri nella pagina:
+      els.forEach(el => {
+        el.classList.remove("in"); // rimuovi eventuale stato precedente
+        io.observe(el);
+      });
+    });
+
+    return () => {
+      cancelAnimationFrame(id);
+      // l'IntersectionObserver viene garbage-collectato quando non ci sono riferimenti
+      // (se vuoi essere pignolo, salva 'io' in una var esterna e fai io.disconnect() qui)
+    };
+  }, [pathname]);
+
+  return null; // non renderizza nulla
+}
+
+function App() {
+
+  return (
+    <div>
+      <Router>
+        <ScrollToTop behavior='smooth'/>
+        <AnimInitOnRouteChange/>
+      <Header/>
+    
+     { /*<Navbar/>*/}
+     {/* <NavbarCarousel/>*/}
+     {/* <NavbarCarouselImgs/>*/}
+           <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/chi-sono" element={<Chisono/>}/>
+        <Route path="/contatti" element={<Contatti/>}/>
+        <Route path="/iot" element={<Iot/>}/>
+        <Route path='/portfolio' element={<Portfolio/>}/>
+        <Route path='/Servizi' element={<Servizi/>}/>
+        <Route path='/webapp' element={<Webapp/>}/>
+      </Routes>
+      <StickyContactBar/>
+      <Footer/>
+      </Router>
+    </div>
+  );
+}
+
+export default App;
