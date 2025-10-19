@@ -55,6 +55,7 @@ input:focus, textarea:focus { outline: 2px solid #11182722; background: #fff; }
   font-weight: 700;
   border: 1px solid #111827;
   transition: transform .1s ease, filter .2s ease;
+  white-space: nowrap;
 }
 .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
 .btn.secondary { background: #f8fafc; color: #111827; border-color: #e5e7eb; }

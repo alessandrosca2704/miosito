@@ -57,8 +57,8 @@ function Servizi(){
                 <h2>Progetti recenti:</h2>
                 <div className="projects">
                     <div className="project">
-                        <h4>Progettazione di un sistema IoT basato su sensori di movimento per il controllo di sistemi industriali </h4>
-                        <button className="PulsantiS"><a href="/files/Tesi.pdf" target="_blank" rel="noopener noreferrer" className="btn" style={{textDecoration:'none', color:'white'}}>Scopri di più</a></button>
+                        <h4>Realizzazione di un sito web dinamico per Studio Contabile </h4>
+                        <button className="PulsantiS"><a href="https://www.studioscarimbolo.it" target="_blank" rel="noopener noreferrer" className="btn"> Scopri di più</a></button>
                     </div>
                     <div className="project">
                         <h4>Realizzazione sito web per gruppo scout</h4>
