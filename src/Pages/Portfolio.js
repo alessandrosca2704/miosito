@@ -3,22 +3,31 @@ import "../Css/Portfolio.css";
 
 export default function Portfolio() {
   const projects = [
-    {
+        {
       id: 1,
+      title: "Realizzazione di un sito web dinamico per Studio Contabile ",
+      desc: "Sito responsive , dinamico , CMS intuitivo e best practice SEO on-page",
+      img: "images/Portfolio/sito-studio.png",
+      link: "https://www.studioscarimbolo.it"
+
+
+    },
+    {
+      id: 2,
       title: "Progettazione di un sistema IoT basato su sensori di movimento per il controllo di sistemi industriali ",
       desc: "La mia Tesi di Laurea, basata su Sensori ESP32 + dashboard ThingsBoard per controllo delle vibrazioni e manutenzione predittiva.",
       img: "images/Portfolio/ESP32.png",
       pdf: "files/Tesi.pdf"
     },
     {
-      id: 2,
+      id: 3,
       title: "Web App per creazione di Pg in Dungeon & Dragons 5e",
       desc: "Gestione di grandi db ed interattività user-friendly, sviluppata in React + Node.js.",
       img: "/images/Portfolio/workinprogress.jpg",
       link: "/portfolio/webapp"
     },
     {
-      id: 3,
+      id: 4,
       title: "Sito vetrina per Gruppo Scout Bari 14",
       desc: "Sito responsive, aggiornabile dal cliente.",
       img: "/images/Portfolio/SitoSCOUT.png",
@@ -48,7 +57,7 @@ export default function Portfolio() {
               <h2>{p.title}</h2>
               <p>{p.desc}</p>
               <div className="actions">
-                {p.link && <Link to={p.link} className="btn">Dettagli</Link>}
+                {p.link && <Link to={p.link} className="btn" target="_blank">Dettagli</Link>}
                 {p.pdf && (
                   <a href={p.pdf} target="_blank" rel="noopener noreferrer" className="btn secondary">
                     Apri PDF
