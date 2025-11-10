@@ -2,69 +2,69 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Pagine principali -->
   <url>
-    <loc>https://tuodominio.it/</loc>
+    <loc>https://www.alessandroscarimbolo.it/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/chi-sono</loc>
+    <loc>https://www.alessandroscarimbolo.it/chi-sono</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/contatti</loc>
+    <loc>https://www.alessandroscarimbolo.it/contatti</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/iot</loc>
+    <loc>https://www.alessandroscarimbolo.it/iot</loc>
     <changefreq>quarterly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/portfolio</loc>
+    <loc>https://www.alessandroscarimbolo.it/portfolio</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/Servizi</loc>
+    <loc>https://www.alessandroscarimbolo.it/Servizi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/webapp</loc>
+    <loc>https://www.alessandroscarimbolo.it/webapp</loc>
     <changefreq>quarterly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/templates</loc>
+    <loc>https://www.alessandroscarimbolo.it/templates</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <!-- One-page template -->
   <url>
-    <loc>https://tuodominio.it/templates/pro-services</loc>
+    <loc>https:/www.alessandroscarimbolo.it/templates/pro-services</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/templates/craftsmen</loc>
+    <loc>https://www.alessandroscarimbolo.it/templates/craftsmen</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/templates/nonprofit</loc>
+    <loc>https://www.alessandroscarimbolo.it/templates/nonprofit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/templates/sme</loc>
+    <loc>https://www.alessandroscarimbolo.it/templates/sme</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tuodominio.it/templates/retail</loc>
+    <loc>https://www.alessandroscarimbolo.it/templates/retail</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
