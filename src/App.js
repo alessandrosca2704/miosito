@@ -16,6 +16,12 @@ import SideMenu from './component/SideMenu';
 import StickyContactBar from './component/StickyContactBar';
 import { useEffect } from 'react';
 import ScrollToTop from './component/ScrollToTop';
+import Templates from './Pages/Templates';
+import ProServicesTemplate from './Pages/templates/ProServicesTemplate';
+import CraftsmenTemplate from './Pages/templates/CraftsmenTemplate';
+import NonProfitTemplate from './Pages/templates/NonProfitTemplate';
+import SmeTemplate from './Pages/templates/SmeTemplate';
+import RetailTemplate from './Pages/templates/RetailTemplate';
 
 function AnimInitOnRouteChange() {
   const { pathname } = useLocation();
@@ -71,6 +77,12 @@ function App() {
         <Route path='/portfolio' element={<Portfolio/>}/>
         <Route path='/Servizi' element={<Servizi/>}/>
         <Route path='/webapp' element={<Webapp/>}/>
+        <Route path='/templates' element={<Templates/>}/>
+        <Route path='/templates/pro-services' element={<ProServicesTemplate/>}/>
+        <Route path='/templates/craftsmen' element={<CraftsmenTemplate/>}/>
+        <Route path='/templates/nonprofit' element={<NonProfitTemplate/>}/>
+        <Route path='/templates/sme' element={<SmeTemplate/>}/>
+        <Route path='/templates/retail' element={<RetailTemplate/>}/>
       </Routes>
       <StickyContactBar/>
       <Footer/>
