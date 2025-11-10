@@ -403,6 +403,7 @@ a{
 /* Responsive tweaks */
 @media (max-width:1024px){
   .hero.two-col{
+    margin-top: 0;
     grid-template-columns:1fr;
   }
   .hero-right{
