@@ -119,7 +119,7 @@
 
 .chat-assistant__message p {
   margin: 0;
-  color: inherit;
+  color: black;
 }
 
 .chat-assistant__message--assistant {
