@@ -57,7 +57,7 @@ export default function ChatAssistant({ isSuppressed = false }) {
     setErrorMessage('');
 
     try {
-      const response = await fetch('/netlify/functions/chatAssistant', {
+      const response = await fetch('/.netlify/functions/chatAssistant', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
