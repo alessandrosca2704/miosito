@@ -56,8 +56,14 @@
 
   </head>
   <body>
-    <title>Alessandro Scarimbolo – Soluzioni IoT e Web App su misura</title>
+    <title>Alessandro Scarimbolo — Soluzioni IoT e Web App su misura</title>
     <meta name="description" content="Ingegnere informatico specializzato in soluzioni IoT e Web App su misura per PMI. Scopri i miei progetti e come posso aiutarti a innovare la tua impresa.">
+    <!-- Hidden Netlify form to register "contatti" for SPA builds -->
+    <form name="contatti" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+    </form>
 
     <div id="root"></div>
     <!--
