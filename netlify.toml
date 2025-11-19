@@ -1,5 +1,12 @@
-[functions]
-  directory = "netlify/functions"
+[build]
+  command = "npm run build"
+  publish = "build"
 
 [build.environment]
   NODE_VERSION = "18"
+  NPM_FLAGS = "--legacy-peer-deps"
+  CI = "false"   # (CRA spesso fallisce in CI su semplici warning)
+
+[functions]
+  directory = "netlify/functions"
+
