@@ -4,7 +4,7 @@ import "../Css/StickyContactBar.css";
 
 const MOBILE_QUERY = "(max-width: 640px)";
 
-export default function StickyContactBar() {
+export default function StickyContactBar({ onMobilePanelToggle }) {
   const phone = "+393661876647";
   const wa = "393661876647";
   const waText = encodeURIComponent(
@@ -40,6 +40,12 @@ export default function StickyContactBar() {
     document.addEventListener("pointerdown", handleOutside);
     return () => document.removeEventListener("pointerdown", handleOutside);
   }, [isMobile, isOpen]);
+
+  useEffect(() => {
+    if (typeof onMobilePanelToggle === "function") {
+      onMobilePanelToggle(isMobile && isOpen);
+    }
+  }, [isMobile, isOpen, onMobilePanelToggle]);
 
   return (
     <>

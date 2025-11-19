@@ -1,31 +1,52 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import "../Css/Contatti.css";
 
 export default function Contatti() {
-  const YOUR_EMAIL = "alessandro.scarimbolo2704@gmail.com";     // 🔁 Cambia qui
-  const YOUR_PHONE = "+39 3661876647";             // 🔁 Cambia qui
-  const YOUR_WHATSAPP = "393661876647";              // 🔁 Senza "+"
+  const FORM_NAME = "contatti";
+  const YOUR_EMAIL = "alessandro.scarimbolo2704@gmail.com";
+  const YOUR_PHONE = "+39 3661876647";
+  const YOUR_WHATSAPP = "393661876647";
 
   const [data, setData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState(null);
 
   const onChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    // validazione semplice
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
-    if (!data.name || !emailOk || !data.message) {
-      setStatus({ type: "error", msg: "Compila tutti i campi correttamente." });
-      return;
-    }
-    // costruisco mailto
+  const encode = (payload) => new URLSearchParams(payload).toString();
+
+  const fallbackMailto = () => {
     const subject = encodeURIComponent(`Richiesta da ${data.name}`);
     const body = encodeURIComponent(
       `Nome: ${data.name}\nEmail: ${data.email}\n\nMessaggio:\n${data.message}`
     );
     window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
-    setStatus({ type: "ok", msg: "Sto aprendo il client email…" });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
+    if (!data.name || !emailOk || !data.message) {
+      setStatus({ type: "error", msg: "Compila tutti i campi correttamente." });
+      return;
+    }
+    setStatus({ type: "info", msg: "Invio in corso..." });
+    try {
+      const res = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ "form-name": FORM_NAME, ...data })
+      });
+      if (res.ok || res.status === 302) {
+        setStatus({ type: "ok", msg: "Messaggio inviato! Ti ricontatterò presto." });
+        setData({ name: "", email: "", message: "" });
+      } else {
+        setStatus({ type: "error", msg: "Invio non riuscito, apro il client email..." });
+        fallbackMailto();
+      }
+    } catch (err) {
+      setStatus({ type: "error", msg: "Invio non riuscito, apro il client email..." });
+      fallbackMailto();
+    }
   };
 
   const waText = encodeURIComponent(
@@ -42,15 +63,15 @@ export default function Contatti() {
 
           <ul className="info-list" role="list">
             <li>
-              <span className="icon">✉️</span>
+              <span className="icon">@</span>
               <a href={`mailto:${YOUR_EMAIL}`}>{YOUR_EMAIL}</a>
             </li>
             <li>
-              <span className="icon">📞</span>
+              <span className="icon">TEL</span>
               <a href={`tel:${YOUR_PHONE.replace(/\s+/g, "")}`}>{YOUR_PHONE}</a>
             </li>
             <li>
-              <span className="icon">💬</span>
+              <span className="icon">WA</span>
               <a
                 href={`https://wa.me/${YOUR_WHATSAPP}?text=${waText}`}
                 target="_blank"
@@ -62,8 +83,8 @@ export default function Contatti() {
           </ul>
 
           <div className="small">
-            <p><strong>Disponibilità:</strong> Lun–Ven, 9:00–18:00</p>
-            <p><strong>Base:</strong> Italia Bari — Remoto / On-site su accordo</p>
+            <p><strong>Disponibilità:</strong> Lun-Ven, 9:00-18:00</p>
+            <p><strong>Base:</strong> Italia Bari - Remoto / On-site su accordo</p>
           </div>
         </aside>
 
@@ -71,7 +92,17 @@ export default function Contatti() {
         <div className="contact-form reveal delay-2">
           <h2>Scrivimi</h2>
 
-          <form onSubmit={onSubmit} noValidate>
+          <form
+            name={FORM_NAME}
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            action="/"
+            onSubmit={onSubmit}
+            noValidate
+          >
+            <input type="hidden" name="form-name" value={FORM_NAME} />
+            <input type="hidden" name="bot-field" />
             <div className="field">
               <label htmlFor="name">Nome</label>
               <input
@@ -104,7 +135,7 @@ export default function Contatti() {
                 id="message"
                 name="message"
                 rows="6"
-                placeholder="Parlami del progetto, obiettivi, tempi…"
+                placeholder="Parlami del progetto, obiettivi, tempi..."
                 value={data.message}
                 onChange={onChange}
                 required

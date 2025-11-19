@@ -14,7 +14,7 @@ import Webapp from './Pages/Web-app';
 import NavbarCarouselImgs from './component/NavbarCarouselImgs';
 import SideMenu from './component/SideMenu';
 import StickyContactBar from './component/StickyContactBar';
-import { useEffect } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import ScrollToTop from './component/ScrollToTop';
 import Templates from './Pages/Templates';
 import ProServicesTemplate from './Pages/templates/ProServicesTemplate';
@@ -22,6 +22,7 @@ import CraftsmenTemplate from './Pages/templates/CraftsmenTemplate';
 import NonProfitTemplate from './Pages/templates/NonProfitTemplate';
 import SmeTemplate from './Pages/templates/SmeTemplate';
 import RetailTemplate from './Pages/templates/RetailTemplate';
+import ChatAssistant from './component/ChatAssistant';
 
 function AnimInitOnRouteChange() {
   const { pathname } = useLocation();
@@ -58,6 +59,10 @@ function AnimInitOnRouteChange() {
 }
 
 function App() {
+  const [isMobileContactOpen, setIsMobileContactOpen] = useState(false);
+  const handleMobileContactState = useCallback((isVisible) => {
+    setIsMobileContactOpen(isVisible);
+  }, []);
 
   return (
     <div>
@@ -84,7 +89,8 @@ function App() {
         <Route path='/templates/sme' element={<SmeTemplate/>}/>
         <Route path='/templates/retail' element={<RetailTemplate/>}/>
       </Routes>
-      <StickyContactBar/>
+      <ChatAssistant isSuppressed={isMobileContactOpen}/>
+      <StickyContactBar onMobilePanelToggle={handleMobileContactState}/>
       <Footer/>
       </Router>
     </div>
