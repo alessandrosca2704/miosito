@@ -13,7 +13,7 @@ function Header(){
             className="site-header__avatar"
           />
           <div>
-            <span className="site-header__eyebrow">Web &amp; IoT Engineer</span>
+            <span className="site-header__eyebrow">Web &amp; IA Engineer</span>
             <h1 className="site-header__name">Alessandro Scarimbolo</h1>
           </div>
         </Link>

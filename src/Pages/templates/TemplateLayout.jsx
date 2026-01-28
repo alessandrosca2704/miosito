@@ -141,7 +141,7 @@ export default function TemplateLayout({
           <aside
             ref={stickyRef}
             id={stickyCta.id || "contatto"}
-            className={`template-detail__sticky-cta reveal${
+            className={`template-detail__sticky-cta${
               isStickyOpen ? "" : " template-detail__sticky-cta--hidden"
             }`}
             aria-live="polite"

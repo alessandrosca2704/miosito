@@ -1,6 +1,6 @@
-import{BrowserRouter as Router , Routes , Route, useLocation} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
-import Header  from './component/Header';
+import Header from './component/Header';
 import Navbar from './component/Navbar';
 import Main from './component/Main';
 import Footer from './component/Footer';
@@ -11,8 +11,6 @@ import Iot from './Pages/Iot';
 import Portfolio from './Pages/Portfolio';
 import Servizi from './Pages/Servizi';
 import Webapp from './Pages/Web-app';
-import NavbarCarouselImgs from './component/NavbarCarouselImgs';
-import SideMenu from './component/SideMenu';
 import StickyContactBar from './component/StickyContactBar';
 import { useEffect, useCallback, useState } from 'react';
 import ScrollToTop from './component/ScrollToTop';
@@ -23,6 +21,7 @@ import NonProfitTemplate from './Pages/templates/NonProfitTemplate';
 import SmeTemplate from './Pages/templates/SmeTemplate';
 import RetailTemplate from './Pages/templates/RetailTemplate';
 import ChatAssistant from './component/ChatAssistant';
+
 
 function AnimInitOnRouteChange() {
   const { pathname } = useLocation();
@@ -58,6 +57,42 @@ function AnimInitOnRouteChange() {
   return null; // non renderizza nulla
 }
 
+function AppLayout({ isMobileContactOpen, handleMobileContactState }) {
+  const { pathname } = useLocation();
+  const hideOnTemplates = pathname.startsWith("/templates/")
+
+  return (
+    <>
+      <ScrollToTop behavior="smooth" />
+      <AnimInitOnRouteChange />
+      <Header />
+      <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/chi-sono" element={<Chisono />} />
+          <Route path="/contatti" element={<Contatti />} />
+          <Route path="/iot" element={<Iot />} />
+          <Route path='/portfolio' element={<Portfolio />} />
+          <Route path='/Servizi' element={<Servizi />} />
+          <Route path='/webapp' element={<Webapp />} />
+          <Route path='/templates' element={<Templates />} />
+          <Route path='/templates/pro-services' element={<ProServicesTemplate />} />
+          <Route path='/templates/craftsmen' element={<CraftsmenTemplate />} />
+          <Route path='/templates/nonprofit' element={<NonProfitTemplate />} />
+          <Route path='/templates/sme' element={<SmeTemplate />} />
+          <Route path='/templates/retail' element={<RetailTemplate />} />
+      </Routes>
+
+      {!hideOnTemplates && <ChatAssistant isSuppressed={isMobileContactOpen} />}
+      {!hideOnTemplates && (
+        <StickyContactBar onMobilePanelToggle={handleMobileContactState} />
+      )}
+      {!hideOnTemplates && <Footer />}
+    </>
+  );
+}
+
+
+
 function App() {
   const [isMobileContactOpen, setIsMobileContactOpen] = useState(false);
   const handleMobileContactState = useCallback((isVisible) => {
@@ -67,34 +102,12 @@ function App() {
   return (
     <div>
       <Router>
-        <ScrollToTop behavior='smooth'/>
-        <AnimInitOnRouteChange/>
-      <Header/>
-    
-     { /*<Navbar/>*/}
-     {/* <NavbarCarousel/>*/}
-     {/* <NavbarCarouselImgs/>*/}
-           <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/chi-sono" element={<Chisono/>}/>
-        <Route path="/contatti" element={<Contatti/>}/>
-        <Route path="/iot" element={<Iot/>}/>
-        <Route path='/portfolio' element={<Portfolio/>}/>
-        <Route path='/Servizi' element={<Servizi/>}/>
-        <Route path='/webapp' element={<Webapp/>}/>
-        <Route path='/templates' element={<Templates/>}/>
-        <Route path='/templates/pro-services' element={<ProServicesTemplate/>}/>
-        <Route path='/templates/craftsmen' element={<CraftsmenTemplate/>}/>
-        <Route path='/templates/nonprofit' element={<NonProfitTemplate/>}/>
-        <Route path='/templates/sme' element={<SmeTemplate/>}/>
-        <Route path='/templates/retail' element={<RetailTemplate/>}/>
-      </Routes>
-      <ChatAssistant isSuppressed={isMobileContactOpen}/>
-      <StickyContactBar onMobilePanelToggle={handleMobileContactState}/>
-      <Footer/>
+        <AppLayout
+          isMobileContactOpen={isMobileContactOpen}
+          handleMobileContactState={handleMobileContactState}
+        />
       </Router>
     </div>
   );
 }
-
 export default App;

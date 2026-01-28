@@ -24,7 +24,7 @@ function Servizi(){
                 <div className="services-hero__inner reveal delay-2">
                     <h1>Soluzioni su misura per PMI</h1>
                     <p className="services-hero__sub">
-                        Dallo <strong>sviluppo web</strong> alle <strong>soluzioni IoT</strong>: progetto , realizzo e rendo disponibili online strumenti semplici , veloci e scalabili.
+                        Dallo <strong>sviluppo web</strong> alle <strong>soluzioni IA</strong>: progetto , realizzo e rendo disponibili online strumenti semplici , veloci e scalabili.
                     </p>
                     <ul className="services-bullets" role="list">
                         <li>
@@ -46,7 +46,7 @@ function Servizi(){
                     </div>
 
                     <div className="services-badges">
-                        <span className="pill primary">IoT • Web App • Siti Web</span>
+                        <span className="pill primary">IA • Web App • Siti Web</span>
                         <span className="pill ok">Disponibile per nuovi progetti</span>
                     </div>
                 </div>

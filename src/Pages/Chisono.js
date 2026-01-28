@@ -18,9 +18,9 @@ function Chisono(){
                 <p>Siti moderni e veloci, web-app su misura con attenzione a UX e performance.</p>
             </div>
             <div className="about-card reveal delay-4">
-                    <div className="about-ic">Soluzioni IoT</div>
+                    <div className="about-ic">Soluzioni IA</div>
                     <h3>📡</h3>
-                    <p>Sistemi embedded, ESP32, raccolta dati e dashboard (ThingsBoard, Grafana).</p>
+                    <p>Soluzioni IA per automatizzare i processi produttivi, ridurre sprechi e aumentare efficienza e qualità.</p>
             </div>
             <div className="about-card reveal delay-5">
                 <div className="about-ic">Prototipi & Consulenza</div>
@@ -58,7 +58,7 @@ function Chisono(){
             <span className="about-badge">3</span>
             <div>
               <h4>Freelance</h4>
-              <p>Progetti IoT e web per PMI e no-profit: soluzioni pratiche e documentate.</p>
+              <p>Progetti integrazione IA e web per PMI e no-profit: soluzioni pratiche e documentate.</p>
             </div>
           </li>
         </ol>
