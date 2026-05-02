@@ -21,6 +21,7 @@ import NonProfitTemplate from './Pages/templates/NonProfitTemplate';
 import SmeTemplate from './Pages/templates/SmeTemplate';
 import RetailTemplate from './Pages/templates/RetailTemplate';
 import ChatAssistant from './component/ChatAssistant';
+import PayrollCheckerPage from './features/bustapaga/PayrollCheckerPage';
 
 
 function AnimInitOnRouteChange() {
@@ -80,6 +81,7 @@ function AppLayout({ isMobileContactOpen, handleMobileContactState }) {
           <Route path='/templates/nonprofit' element={<NonProfitTemplate />} />
           <Route path='/templates/sme' element={<SmeTemplate />} />
           <Route path='/templates/retail' element={<RetailTemplate />} />
+          <Route path='/bustapaga' element={<PayrollCheckerPage />} />
       </Routes>
 
       {!hideOnTemplates && <ChatAssistant isSuppressed={isMobileContactOpen} />}
