@@ -38,7 +38,7 @@ function ParsedPayslipPreview({ lines, rawText }) {
                   <td data-label="Codice">{line.code}</td>
                   <td data-label="Descrizione">{line.description}</td>
                   <td data-label="Parametro">{formatNumber(line.quantity)}</td>
-                  <td data-label="Importo">{formatNumber(line.credit ?? line.debit)}</td>
+                  <td data-label="Importo">{formatNumber(line.totalCredit || line.totalDebit || line.credit || line.debit)}</td>
                 </tr>
               ))}
             </tbody>

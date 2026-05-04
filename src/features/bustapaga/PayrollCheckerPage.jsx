@@ -9,13 +9,21 @@ import ParsedDiaryPreview from "./components/ParsedDiaryPreview";
 import ParsedPayslipPreview from "./components/ParsedPayslipPreview";
 import AnomalyList from "./components/AnomalyList";
 import ExportJsonButton from "./components/ExportJsonButton";
+import ExcludedPayslipLinesAccordion from "./components/ExcludedPayslipLinesAccordion";
+import PayrollTotalCalculatorModal from "./components/PayrollTotalCalculatorModal";
 import { extractPdfText } from "./parsers/pdfText";
 import {
   extractDiaryPeriod,
   getDiaryMonthlySection,
   parseDiaryMonthlyItems,
 } from "./parsers/diaryParser";
-import { extractPayslipPeriod, parsePayslipLines } from "./parsers/payslipParser";
+import {
+  aggregatePayslipLines,
+  extractPayslipPeriod,
+  extractPayslipTotals,
+  groupExcludedPayslipLines,
+  parsePayslipLines,
+} from "./parsers/payslipParser";
 import { reconcileDiaryWithPayslip } from "./parsers/reconciliation";
 import { detectSensitiveData } from "./parsers/privacy";
 
@@ -35,6 +43,7 @@ const emptyPayslip = {
   text: "",
   period: "",
   lines: [],
+  totals: null,
   sensitiveLabels: [],
   error: "",
   isLoading: false,
@@ -43,17 +52,30 @@ const emptyPayslip = {
 function PayrollCheckerPage() {
   const [diary, setDiary] = useState(emptyDiary);
   const [payslip, setPayslip] = useState(emptyPayslip);
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+  const [payrollSimulation, setPayrollSimulation] = useState({ input: null, result: null });
+
+  const aggregatedPayslipLines = useMemo(
+    () => aggregatePayslipLines(payslip.lines),
+    [payslip.lines]
+  );
+  const excludedPayslipGroups = useMemo(
+    () => groupExcludedPayslipLines(payslip.lines),
+    [payslip.lines]
+  );
+  const excludedPayslipCount = useMemo(
+    () => excludedPayslipGroups.reduce((total, group) => total + group.lines.length, 0),
+    [excludedPayslipGroups]
+  );
 
   const reconciliationResults = useMemo(
-    () => reconcileDiaryWithPayslip(diary.items, payslip.lines),
-    [diary.items, payslip.lines]
+    () => reconcileDiaryWithPayslip(diary.items, aggregatedPayslipLines),
+    [aggregatedPayslipLines, diary.items]
   );
   const anomalies = useMemo(
     () => reconciliationResults.filter((result) => result.status !== "OK"),
     [reconciliationResults]
   );
-  const okCount = reconciliationResults.length - anomalies.length;
-
   async function handleDiaryUpload(file) {
     setDiary((current) => ({
       ...current,
@@ -103,6 +125,7 @@ function PayrollCheckerPage() {
         text,
         period: extractPayslipPeriod(text),
         lines,
+        totals: extractPayslipTotals(text),
         sensitiveLabels: detectSensitiveData(text),
         error: "",
         isLoading: false,
@@ -128,8 +151,16 @@ function PayrollCheckerPage() {
       fileName: payslip.fileName,
       period: payslip.period,
       lines: payslip.lines,
+      aggregatedLines: aggregatedPayslipLines,
+      excludedLines: excludedPayslipGroups,
+      totals: payslip.totals,
     },
     reconciliationResults,
+    diaryItems: diary.items,
+    payslipLines: aggregatedPayslipLines,
+    excludedPayslipLines: excludedPayslipGroups,
+    payrollSimulationInput: payrollSimulation.input,
+    payrollSimulationResult: payrollSimulation.result,
   };
 
   return (
@@ -143,7 +174,19 @@ function PayrollCheckerPage() {
             usando Codice voce e Parametro come chiave di confronto.<br/><strong> Ricorda di confrontare la busta paga con il diario di bordo del mese precedente.</strong>
           </p>
         </div>
-        <ExportJsonButton data={exportData} disabled={reconciliationResults.length === 0} />
+        <div className="payroll-action-bar">
+          <ExportJsonButton data={exportData} disabled={reconciliationResults.length === 0} />
+          {/* TODO: riattivare quando la simulazione totale busta paga sara' consolidata.
+          <button
+            type="button"
+            className="payroll-secondary-button"
+            disabled={diary.items.length === 0 && payslip.lines.length === 0}
+            onClick={() => setIsCalculatorOpen(true)}
+          >
+            Calcola totale busta paga
+          </button>
+          */}
+        </div>
       </section>
 
       <div className="payroll-privacy-alert" role="alert">
@@ -192,18 +235,41 @@ function PayrollCheckerPage() {
         payslipPeriod={payslip.period}
         diaryCount={diary.items.length}
         payslipCount={payslip.lines.length}
-        okCount={okCount}
+        comparedCount={reconciliationResults.length}
         anomalyCount={anomalies.length}
+        excludedCount={excludedPayslipCount}
       />
 
       <ReconciliationTable results={reconciliationResults} />
+      {/* TODO: riattivare quando la simulazione totale busta paga sara' consolidata.
+      <div className="payroll-bottom-actions">
+        <button
+          type="button"
+          className="payroll-primary-button"
+          disabled={diary.items.length === 0 && payslip.lines.length === 0}
+          onClick={() => setIsCalculatorOpen(true)}
+        >
+          Calcola totale busta paga
+        </button>
+      </div>
+      */}
+      <ExcludedPayslipLinesAccordion groups={excludedPayslipGroups} />
       <AnomalyList anomalies={anomalies} />
 
-      <section className="payroll-preview-grid">
+     {/* <section className="payroll-preview-grid">
         <ParsedDiaryPreview items={diary.items} rawText={diary.text} />
-        <ParsedPayslipPreview lines={payslip.lines} rawText={payslip.text} />
+        <ParsedPayslipPreview lines={aggregatedPayslipLines} rawText={payslip.text} />
       </section>
-      <p style={{display:'flex',justifyContent:'center',alignItems:'center'}}>SCAPayrollFsChecker Version 0.1</p>
+      {isCalculatorOpen && (
+        <PayrollTotalCalculatorModal
+          diaryItems={diary.items}
+          payslipLines={aggregatedPayslipLines}
+          payslipTotals={payslip.totals}
+          onClose={() => setIsCalculatorOpen(false)}
+          onCalculated={(input, result) => setPayrollSimulation({ input, result })}
+        />
+      )}*/}
+      <p style={{display:'flex',justifyContent:'center',alignItems:'center'}}>SCAPayrollFsChecker Version 0.1.1</p>
     </main>
   );
 }

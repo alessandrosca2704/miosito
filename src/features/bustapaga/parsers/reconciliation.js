@@ -4,8 +4,13 @@ function roundDifference(value) {
   return Math.round(value * 100) / 100;
 }
 
+function isExcludedAggregatedLine(line) {
+  return line.category && line.category !== "CONFRONTO";
+}
+
 export function reconcileDiaryWithPayslip(diaryItems, payslipLines) {
-  const payslipByCode = new Map(payslipLines.map((line) => [line.code, line]));
+  const comparablePayslipLines = payslipLines.filter((line) => !isExcludedAggregatedLine(line));
+  const payslipByCode = new Map(comparablePayslipLines.map((line) => [line.code, line]));
   const diaryCodes = new Set();
   const results = [];
 
@@ -39,12 +44,12 @@ export function reconcileDiaryWithPayslip(diaryItems, payslipLines) {
       payslipQuantity: payslipLine.quantity,
       difference,
       payslipRate: payslipLine.rate,
-      payslipAmount: payslipLine.credit ?? payslipLine.debit,
+      payslipAmount: payslipLine.totalCredit || payslipLine.totalDebit || null,
       status,
     });
   });
 
-  payslipLines.forEach((line) => {
+  comparablePayslipLines.forEach((line) => {
     if (diaryCodes.has(line.code)) {
       return;
     }
@@ -56,7 +61,7 @@ export function reconcileDiaryWithPayslip(diaryItems, payslipLines) {
       payslipQuantity: line.quantity,
       difference: null,
       payslipRate: line.rate,
-      payslipAmount: line.credit ?? line.debit,
+      payslipAmount: line.totalCredit || line.totalDebit || null,
       status: "EXTRA_IN_CEDOLINO",
     });
   });

@@ -7,15 +7,24 @@ function SummaryTile({ label, value, tone }) {
   );
 }
 
-function MonthlySummaryCards({ diaryPeriod, payslipPeriod, diaryCount, payslipCount, okCount, anomalyCount }) {
+function MonthlySummaryCards({
+  diaryPeriod,
+  payslipPeriod,
+  diaryCount,
+  payslipCount,
+  comparedCount,
+  anomalyCount,
+  excludedCount,
+}) {
   return (
     <section className="payroll-summary-grid" aria-label="Riepilogo controllo busta paga">
       <SummaryTile label="Periodo diario" value={diaryPeriod || "-"} />
       <SummaryTile label="Mese cedolino" value={payslipPeriod || "-"} />
       <SummaryTile label="Voci diario" value={diaryCount} />
       <SummaryTile label="Voci cedolino" value={payslipCount} />
-      <SummaryTile label="Voci OK" value={okCount} tone="ok" />
+      <SummaryTile label="Voci confrontate" value={comparedCount} tone="ok" />
       <SummaryTile label="Anomalie" value={anomalyCount} tone={anomalyCount > 0 ? "alert" : "ok"} />
+      <SummaryTile label="Voci escluse/figurative" value={excludedCount} />
     </section>
   );
 }
