@@ -4,6 +4,7 @@
   padding: 0;
   box-sizing: border-box;
   color: #111827;
+  animation: payroll-page-enter 420ms ease-out both;
 }
 
 .payroll-hero {
@@ -12,6 +13,7 @@
   justify-content: space-between;
   gap: 24px;
   margin: 12px 0 22px;
+  animation: payroll-rise-in 460ms ease-out 80ms both;
 }
 
 .payroll-action-bar,
@@ -50,14 +52,65 @@
   line-height: 1.65;
 }
 
-.payroll-privacy-alert {
-  margin-bottom: 18px;
-  padding: 14px 16px;
-  border: 1px solid #f4c56a;
+.payroll-confirmation {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #1e3a8a;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.payroll-confirmation input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
+
+.payroll-privacy-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.62);
+  animation: payroll-fade-in 180ms ease-out both;
+}
+
+.payroll-privacy-modal {
+  width: min(720px, 100%);
+  max-height: min(92vh, 780px);
+  overflow: auto;
+  padding: 22px;
   border-radius: 8px;
-  background: #fff8e6;
-  color: #7a4d00;
-  font-weight: 650;
+  background: #fff;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.34);
+  animation: payroll-modal-enter 240ms ease-out both;
+}
+
+.payroll-privacy-modal h2 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.payroll-privacy-modal p {
+  margin: 12px 0 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.payroll-privacy-modal .payroll-confirmation {
+  margin-top: 18px;
+}
+
+.payroll-privacy-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .payroll-upload-grid,
@@ -66,6 +119,14 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+.payroll-upload-grid {
+  animation: payroll-rise-in 460ms ease-out 160ms both;
+}
+
+.payroll-status-grid {
+  animation: payroll-rise-in 460ms ease-out 220ms both;
 }
 
 .payroll-status-grid,
@@ -84,6 +145,12 @@
 
 .payroll-card {
   padding: 18px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.payroll-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 46px rgba(15, 23, 42, 0.11);
 }
 
 .payroll-card h2,
@@ -116,6 +183,22 @@
   color: #fff;
   font-weight: 800;
   cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.payroll-upload-control:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.18);
+}
+
+.payroll-upload-control:has(input:disabled) {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.payroll-upload-control:has(input:disabled):hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .payroll-upload-control input {
@@ -413,6 +496,13 @@
   padding: 0 14px;
   font-weight: 850;
   cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.payroll-primary-button:hover:not(:disabled),
+.payroll-secondary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
 }
 
 .payroll-primary-button {
@@ -434,6 +524,76 @@
   border: 1px solid #cbd5e1;
   background: #fff;
   color: #111827;
+}
+
+@keyframes payroll-page-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes payroll-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes payroll-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes payroll-modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .payroll-page,
+  .payroll-hero,
+  .payroll-upload-grid,
+  .payroll-status-grid,
+  .payroll-privacy-backdrop,
+  .payroll-privacy-modal {
+    animation: none;
+  }
+
+  .payroll-card,
+  .payroll-upload-control,
+  .payroll-primary-button,
+  .payroll-secondary-button {
+    transition: none;
+  }
+
+  .payroll-card:hover,
+  .payroll-upload-control:hover,
+  .payroll-primary-button:hover:not(:disabled),
+  .payroll-secondary-button:hover:not(:disabled) {
+    transform: none;
+    box-shadow: inherit;
+  }
 }
 
 .payroll-raw-text {
@@ -678,11 +838,6 @@
     font-size: 14px;
   }
 
-  .payroll-privacy-alert {
-    padding: 12px;
-    font-size: 14px;
-  }
-
   .payroll-upload-grid,
   .payroll-status-grid,
   .payroll-preview-grid,
@@ -703,6 +858,7 @@
 
   .payroll-action-bar,
   .payroll-bottom-actions,
+  .payroll-privacy-actions,
   .payroll-role-selector,
   .payroll-modal-heading,
   .payroll-modal-actions {

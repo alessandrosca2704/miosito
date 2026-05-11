@@ -11,3 +11,13 @@
 [functions]
   directory = "netlify/functions"
 
+[[headers]]
+  for = "/bustapaga"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/bustapaga/*"
+  [headers.values]
+    Cache-Control = "no-store"
+

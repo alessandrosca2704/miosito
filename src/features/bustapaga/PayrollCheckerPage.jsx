@@ -52,6 +52,9 @@ const emptyPayslip = {
 function PayrollCheckerPage() {
   const [diary, setDiary] = useState(emptyDiary);
   const [payslip, setPayslip] = useState(emptyPayslip);
+  const [privacyConfirmed, setPrivacyConfirmed] = useState(false);
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(true);
+  const [privacyChecked, setPrivacyChecked] = useState(false);
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [payrollSimulation, setPayrollSimulation] = useState({ input: null, result: null });
 
@@ -76,7 +79,22 @@ function PayrollCheckerPage() {
     () => reconciliationResults.filter((result) => result.status !== "OK"),
     [reconciliationResults]
   );
+  const canUploadPdf = privacyConfirmed && privacyChecked;
+
+  function acceptPrivacyNotice() {
+    if (!privacyChecked) {
+      return;
+    }
+
+    setPrivacyConfirmed(true);
+    setPrivacyModalOpen(false);
+  }
+
   async function handleDiaryUpload(file) {
+    if (!canUploadPdf) {
+      return;
+    }
+
     setDiary((current) => ({
       ...current,
       fileName: file.name,
@@ -91,7 +109,7 @@ function PayrollCheckerPage() {
 
       setDiary({
         fileName: file.name,
-        text,
+        text: "",
         period: extractDiaryPeriod(text),
         items,
         sectionFound: section.found,
@@ -109,6 +127,10 @@ function PayrollCheckerPage() {
   }
 
   async function handlePayslipUpload(file) {
+    if (!canUploadPdf) {
+      return;
+    }
+
     setPayslip((current) => ({
       ...current,
       fileName: file.name,
@@ -122,7 +144,7 @@ function PayrollCheckerPage() {
 
       setPayslip({
         fileName: file.name,
-        text,
+        text: "",
         period: extractPayslipPeriod(text),
         lines,
         totals: extractPayslipTotals(text),
@@ -175,6 +197,13 @@ function PayrollCheckerPage() {
           </p>
         </div>
         <div className="payroll-action-bar">
+          <button
+            type="button"
+            className="payroll-secondary-button"
+            onClick={() => setPrivacyModalOpen(true)}
+          >
+            Privacy e sicurezza
+          </button>
           <ExportJsonButton data={exportData} disabled={reconciliationResults.length === 0} />
           {/* TODO: riattivare quando la simulazione totale busta paga sara' consolidata.
           <button
@@ -189,9 +218,70 @@ function PayrollCheckerPage() {
         </div>
       </section>
 
-      <div className="payroll-privacy-alert" role="alert">
-        I PDF possono contenere dati personali e retributivi. I dati restano nel browser salvo esportazione manuale.
-      </div>
+      {privacyModalOpen && (
+        <div className="payroll-privacy-backdrop" role="presentation">
+          <section
+            className="payroll-privacy-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="payroll-privacy-title"
+          >
+            <div>
+              <span className="payroll-kicker">Prima di caricare i PDF</span>
+              <h2 id="payroll-privacy-title">Privacy e sicurezza</h2>
+              <p>
+                I PDF della busta paga contengono dati personali e retributivi. In questa
+                pagina vengono letti localmente nel browser con PDF.js: non risultano upload
+                verso server o API della sezione bustapaga.
+              </p>
+              <p>
+                Il testo estratto viene usato solo per il confronto in pagina e resta nello
+                stato temporaneo del browser. Non viene salvato in localStorage o
+                sessionStorage; l'export JSON viene generato solo su richiesta manuale.
+              </p>
+              <p>
+                Il sito non puo' proteggerti da spyware, malware, keylogger o software
+                malevoli presenti sul tuo dispositivo. Evita computer pubblici, condivisi o
+                sospetti.
+              </p>
+            </div>
+
+            <label className="payroll-confirmation">
+              <input
+                type="checkbox"
+                checked={privacyChecked}
+                onChange={(event) => {
+                  setPrivacyChecked(event.target.checked);
+                  if (!event.target.checked) {
+                    setPrivacyConfirmed(false);
+                  }
+                }}
+              />
+              <span>Confermo di usare un dispositivo sicuro e di essere autorizzato a caricare questo documento.</span>
+            </label>
+
+            <div className="payroll-privacy-actions">
+              {privacyConfirmed && (
+                <button
+                  type="button"
+                  className="payroll-secondary-button"
+                  onClick={() => setPrivacyModalOpen(false)}
+                >
+                  Chiudi
+                </button>
+              )}
+              <button
+                type="button"
+                className="payroll-primary-button"
+                disabled={!privacyChecked}
+                onClick={acceptPrivacyNotice}
+              >
+                Accetto e continuo
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
 
       <section className="payroll-upload-grid">
         <PdfUploadCard
@@ -200,6 +290,8 @@ function PayrollCheckerPage() {
           fileName={diary.fileName}
           isLoading={diary.isLoading}
           error={diary.error}
+          disabled={!canUploadPdf}
+          disabledReason="Conferma prima la nota Privacy e sicurezza."
           onFileSelected={handleDiaryUpload}
         />
         <PdfUploadCard
@@ -208,6 +300,8 @@ function PayrollCheckerPage() {
           fileName={payslip.fileName}
           isLoading={payslip.isLoading}
           error={payslip.error}
+          disabled={!canUploadPdf}
+          disabledReason="Conferma prima la nota Privacy e sicurezza."
           onFileSelected={handlePayslipUpload}
         />
       </section>
