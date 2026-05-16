@@ -1,0 +1,53 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: site_data
+    label: Contenuti sito
+    files:
+      - name: portfolio
+        label: Portfolio
+        file: src/content/portfolio.json
+        format: json
+        fields:
+          - label: Titolo pagina
+            name: pageTitle
+            widget: string
+          - label: Introduzione
+            name: intro
+            widget: text
+          - label: Progetti
+            name: projects
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - label: ID
+                name: id
+                widget: number
+                value_type: int
+                min: 1
+              - label: Titolo
+                name: title
+                widget: string
+              - label: Descrizione
+                name: desc
+                widget: text
+              - label: Immagine
+                name: img
+                widget: image
+              - label: Link
+                name: link
+                widget: string
+                required: false
+              - label: PDF
+                name: pdf
+                widget: string
+                required: false
