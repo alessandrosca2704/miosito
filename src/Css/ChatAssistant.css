@@ -239,19 +239,41 @@
 
 @media (max-width: 600px) {
   .chat-assistant {
-    flex-direction: column-reverse;
-    align-items: flex-start;
-    right: 12px;
-    bottom:calc(18px + env(safe-area-inset-bottom, 0px));
+    right:14px;
+    bottom:14px;
+    left:14px;
+    z-index:2200;
+    display:flex;
+    justify-content:center;
+    pointer-events:none;
   }
 
   .chat-assistant__toggle {
-    padding: 9px 12px;
-    font-size: 0.85rem;
+    display:none;
   }
 
   .chat-assistant__panel {
-    height: 70vh;
+    width:100%;
+    height:min(70dvh, 560px);
+    border-radius:22px;
+    transform:translateY(18px) scale(.98);
+  }
+
+  .chat-assistant--open .chat-assistant__panel {
+    pointer-events:auto;
+    transform:none;
+  }
+
+  .chat-assistant__header{
+    padding:14px 16px 12px;
+  }
+
+  .chat-assistant__messages{
+    padding:14px 16px;
+  }
+
+  .chat-assistant__form textarea{
+    width:100%;
   }
 }
 

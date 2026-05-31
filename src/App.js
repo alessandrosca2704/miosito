@@ -1,9 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
-import Header from './component/Header';
-import Navbar from './component/Navbar';
-import Main from './component/Main';
-import Footer from './component/Footer';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './Pages/Home';
 import Chisono from './Pages/Chisono';
 import Contatti from './Pages/Contatti';
@@ -11,51 +9,26 @@ import Iot from './Pages/Iot';
 import Portfolio from './Pages/Portfolio';
 import Servizi from './Pages/Servizi';
 import Webapp from './Pages/Web-app';
-import StickyContactBar from './component/StickyContactBar';
-import { useEffect, useCallback, useState } from 'react';
-import ScrollToTop from './component/ScrollToTop';
+import StickyContactBar from './components/StickyContactBar';
+import { useCallback, useState } from 'react';
+import ScrollToTop from './components/ScrollToTop';
 import Templates from './Pages/Templates';
 import ProServicesTemplate from './Pages/templates/ProServicesTemplate';
 import CraftsmenTemplate from './Pages/templates/CraftsmenTemplate';
 import NonProfitTemplate from './Pages/templates/NonProfitTemplate';
 import SmeTemplate from './Pages/templates/SmeTemplate';
 import RetailTemplate from './Pages/templates/RetailTemplate';
-import ChatAssistant from './component/ChatAssistant';
+import ChatAssistant from './components/ChatAssistant';
 import PayrollCheckerPage from './features/bustapaga/PayrollCheckerPage';
+import { paths } from './data/navigation';
+import useScrollReveal from './hooks/useScrollReveal';
 
 
-function AnimInitOnRouteChange() {
+function RevealOnRouteChange() {
   const { pathname } = useLocation();
+  useScrollReveal(null, pathname);
 
-  useEffect(() => {
-    // aspetta il render della nuova pagina
-    const id = requestAnimationFrame(() => {
-      const els = document.querySelectorAll(".reveal"); // elementi della pagina corrente
-
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            io.unobserve(e.target); // anima una volta
-          }
-        });
-      }, { threshold: 0.08, rootMargin: "0px 0px -5% 0px" });
-
-      // (opzionale) se vuoi che rianimini ogni volta che entri nella pagina:
-      els.forEach(el => {
-        el.classList.remove("in"); // rimuovi eventuale stato precedente
-        io.observe(el);
-      });
-    });
-
-    return () => {
-      cancelAnimationFrame(id);
-      // l'IntersectionObserver viene garbage-collectato quando non ci sono riferimenti
-      // (se vuoi essere pignolo, salva 'io' in una var esterna e fai io.disconnect() qui)
-    };
-  }, [pathname]);
-
-  return null; // non renderizza nulla
+  return null;
 }
 
 function AppLayout({ isMobileContactOpen, handleMobileContactState }) {
@@ -65,17 +38,20 @@ function AppLayout({ isMobileContactOpen, handleMobileContactState }) {
   return (
     <>
       <ScrollToTop behavior="smooth" />
-      <AnimInitOnRouteChange />
+      <RevealOnRouteChange />
       <Header />
       <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/chi-sono" element={<Chisono />} />
-          <Route path="/contatti" element={<Contatti />} />
-          <Route path="/iot" element={<Iot />} />
-          <Route path='/portfolio' element={<Portfolio />} />
-          <Route path='/Servizi' element={<Servizi />} />
-          <Route path='/webapp' element={<Webapp />} />
-          <Route path='/templates' element={<Templates />} />
+          <Route path={paths.home} element={<Home />} />
+          <Route path={paths.about} element={<Chisono />} />
+          <Route path={paths.contact} element={<Contatti />} />
+          <Route path={paths.iot} element={<Iot />} />
+          <Route path={paths.portfolio} element={<Portfolio />} />
+          <Route path={paths.services} element={<Servizi />} />
+          <Route path={paths.webapp} element={<Webapp />} />
+          <Route path={paths.templates} element={<Templates />} />
+          <Route path="/Servizi" element={<Navigate to={paths.services} replace />} />
+          <Route path="/web-app" element={<Navigate to={paths.webapp} replace />} />
+          <Route path="/portfolio/webapp" element={<Navigate to={paths.webapp} replace />} />
           <Route path='/templates/pro-services' element={<ProServicesTemplate />} />
           <Route path='/templates/craftsmen' element={<CraftsmenTemplate />} />
           <Route path='/templates/nonprofit' element={<NonProfitTemplate />} />

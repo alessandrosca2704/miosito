@@ -1,0 +1,85 @@
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    transition-duration:.01ms !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+  }
+
+  [data-scroll-reveal]{
+    opacity:1;
+    transform:none;
+  }
+
+  .approach-story{
+    min-height:auto;
+  }
+
+  .approach-story__pin{
+    position:relative;
+  }
+
+  .approach-copy__content,
+  .approach-copy__content.is-entering,
+  .approach-copy__content.is-exiting{
+    opacity:1 !important;
+    transform:none !important;
+    animation:none !important;
+  }
+
+  .approach-core,
+  .approach-core.is-entering,
+  .approach-core.is-exiting{
+    opacity:1 !important;
+    transform:translate(-50%, -50%) !important;
+    animation:none !important;
+  }
+
+  .approach-node,
+  .approach-steps li,
+  .approach-mobile-step{
+    will-change:auto;
+  }
+
+  .approach-mobile-step,
+  .approach-mobile-step.is-active{
+    transform:none !important;
+  }
+
+  .software-step,
+  .software-step-wrap.is-past .software-step,
+  .software-step-wrap.is-next .software-step,
+  .software-step-wrap.is-active .software-step{
+    transform:none !important;
+    will-change:auto;
+  }
+
+  .software-flow-arrow,
+  .software-step-wrap.is-active .software-flow-arrow{
+    animation:none !important;
+  }
+
+  .diagram-grid--hero .hero-node,
+  .diagram-grid--hero .hero-node.is-past,
+  .diagram-grid--hero .hero-node.is-next,
+  .diagram-grid--hero .hero-node.is-active{
+    transform:none !important;
+    will-change:auto;
+  }
+
+  .diagram-grid--hero .hero-connector.is-active::before{
+    animation:none !important;
+  }
+
+  .system-progress-track span{
+    transition:none !important;
+  }
+
+  .home-hero__visual,
+  .system-map::before,
+  .diagram-grid{
+    transform:none !important;
+  }
+}

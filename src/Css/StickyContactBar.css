@@ -136,31 +136,81 @@
 
 
 @media (max-width:640px){
+  .stickybar{
+    padding:0 12px calc(12px + env(safe-area-inset-bottom,0px));
+  }
+
   .stickybar__inner{
-    flex-direction:column;
-    align-items:flex-start;
-    border-radius:24px;
+    display:grid;
+    grid-template-columns:40px 1fr;
+    gap:10px;
+    align-items:center;
+    border-radius:22px;
+    padding:12px;
   }
+
   .stickybar__logo{
-    width:42px;
-    height:42px;
+    width:40px;
+    height:40px;
+    border-radius:14px;
   }
+
+  .stickybar__copy{
+    gap:2px;
+  }
+
+  .stickybar__eyebrow{
+    font-size:10px;
+    letter-spacing:.12em;
+  }
+
+  .stickybar__title{
+    font-size:14px;
+    line-height:1.25;
+  }
+
   .stickybar__actions{
+    grid-column:1 / -1;
     width:100%;
-    flex-direction: row;
-    justify-content:flex-end;
+    flex-direction:row;
+    justify-content:space-between;
+    margin-left:0;
+    gap:8px;
   }
+
   .sb-btn{
-    flex:1 1 100%;
+    flex:1 1 0;
+    height:40px;
+    padding:0 12px;
     justify-content:center;
+    font-size:13px;
   }
+
+  .sb-btn.ghost{
+    flex:0 0 44px;
+    margin-left:0;
+    padding:0;
+  }
+
+  .sb-btn.primary span{
+    max-width:130px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
   .stickybar-toggle{
     display:flex;
+    right:12px;
+    bottom:calc(12px + env(safe-area-inset-bottom,0px));
+    padding:10px 14px;
+    font-size:14px;
   }
+
   .stickbar__icons{
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
-    width: 100%;
+    justify-content:flex-start;
+    gap:8px;
   }
 }

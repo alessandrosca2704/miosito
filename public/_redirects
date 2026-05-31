@@ -1,4 +1,4 @@
-/*    /index.html   200
-
-# Fix per React Router (SPA)
-/*    /index.html    200
+/Servizi          /servizi       301!
+/web-app          /webapp        301!
+/portfolio/webapp /webapp        301!
+/*                /index.html    200

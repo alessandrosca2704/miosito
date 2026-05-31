@@ -15,7 +15,7 @@
                 <h2>Benvenuto nel mio sito!</h2>
                 <p>Ciao, sono un ingegnere informatico indipendente specializzato nello sviluppo di soluzioni su misura per piccole e medie imprese. Offro servizi di progettazione e realizzazione di soluzioni IoT, sviluppo web-app e creazione di siti web moderni e funzionali, con un approccio orientato all’efficienza, alla scalabilità e all’esperienza utente. Collaboro con aziende che vogliono portare innovazione nei propri processi, trasformare le idee in strumenti concreti e migliorare la propria presenza digitale.</p>
          <div className="hero-buttons reveal delay-3">  
-        <button className="Pulsanti"><Link to="/Servizi" style={{textDecoration:'none', color:'white'}} >Scopri i servizi</Link></button>
+        <button className="Pulsanti"><Link to="/servizi" style={{textDecoration:'none', color:'white'}} >Scopri i servizi</Link></button>
         <button className="Pulsanti"><Link to="/contatti" style={{textDecoration:'none', color:'white'}} >Contattami!</Link></button>
         <button className="Pulsanti"><Link to="/chi-sono" style={{textDecoration:'none', color:'white'}} >Scopri di più su di me.</Link></button>
         </div>

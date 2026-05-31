@@ -1,30 +1,30 @@
-import "../Css/Templates.css";
 import { Link } from "react-router-dom";
+import "../Css/Templates.css";
 
 const templates = [
   {
     id: "pro-services",
     title: "Studio Professionale",
-    subtitle: "Contabili · Assicuratori · Consulenti",
+    subtitle: "Contabili - Assicuratori - Consulenti",
     blurb:
       "Hero con headline di valore, blocco servizi a tre colonne e CTA 'Prenota una consulenza'. Include sezione testimonianze e pacchetti tariffari.",
-    highlights: ["Palette blu profondo", "Timeline certificazioni", "Modulo contatto sticky"]
+    highlights: ["Palette blu profondo", "Timeline certificazioni", "Modulo contatto sticky"],
   },
   {
     id: "craftsmen",
     title: "Artigiani & Professionisti di settore",
-    subtitle: "Falegnami · Idraulici · Designer",
+    subtitle: "Falegnami - Idraulici - Designer",
     blurb:
-      "Layout modulare con ampie foto prima/dopo, lista interventi rapidi e badge di disponibilità immediata. Perfetto per raccontare manualità e fiducia.",
-    highlights: ["Hero immersivo", "Slider lavori recenti", "Sezione 'Come lavoro'"]
+      "Layout modulare con ampie foto prima/dopo, lista interventi rapidi e badge di disponibilita immediata. Perfetto per raccontare manualita e fiducia.",
+    highlights: ["Hero immersivo", "Slider lavori recenti", "Sezione 'Come lavoro'"],
   },
   {
     id: "nonprofit",
     title: "Associazioni",
-    subtitle: "ETS · Onlus · No profit",
+    subtitle: "ETS - Onlus - No profit",
     blurb:
       "Struttura narrativa: manifesto, impatto numerico, storie delle persone e call to action donazione/eventi. Integra calendario rapido e form adesioni.",
-    highlights: ["Counter impatto", "Story cards", "CTA doppia Donazione / Diventa volontario"]
+    highlights: ["Counter impatto", "Story cards", "CTA doppia Donazione / Diventa volontario"],
   },
   {
     id: "sme",
@@ -32,16 +32,16 @@ const templates = [
     subtitle: "Prodotti digitali e servizi B2B",
     blurb:
       "Landing modulare orientata alla conversione: value proposition, blocco feature, social proof e pricing plan. Ideale per aziende innovative.",
-    highlights: ["Hero split con mockup", "Loghi clienti", "FAQ accordion"]
+    highlights: ["Hero split con mockup", "Loghi clienti", "FAQ accordion"],
   },
   {
     id: "retail",
-    title: "Negozi & Attività commerciali",
-    subtitle: "Local shop · Boutique · Food",
+    title: "Negozi & Attivita commerciali",
+    subtitle: "Local shop - Boutique - Food",
     blurb:
-      "Template one-page con menù rapido, galleria prodotti e sezione orari/posizione. Focus su prenotazione veloce e integrazione mappe.",
-    highlights: ["Cards prodotti", "Banner promo", "Mappa interattiva"]
-  }
+      "Template one-page con menu rapido, galleria prodotti e sezione orari/posizione. Focus su prenotazione veloce e integrazione mappe.",
+    highlights: ["Cards prodotti", "Banner promo", "Mappa interattiva"],
+  },
 ];
 
 function TemplateCard({ template }) {
@@ -76,7 +76,7 @@ function TemplateCard({ template }) {
       </ul>
 
       <div className="template-card__cta">
-        <Link to={`/templates/${template.id}`}><button type="button">Scopri questo Template</button></Link>
+        <Link to={`/templates/${template.id}`}>Scopri questo Template</Link>
       </div>
     </article>
   );
@@ -89,7 +89,7 @@ export default function Templates() {
         <span className="eyebrow">Libreria</span>
         <h1>Template one-page pronti per il tuo business</h1>
         <p>
-          Seleziono layout moderni e flessibili per professionisti, imprese e associazioni. Ogni template è
+          Seleziono layout moderni e flessibili per professionisti, imprese e associazioni. Ogni template e
           ottimizzato per performance, SEO e conversione, personalizzabile in pochi giorni.
         </p>
       </section>

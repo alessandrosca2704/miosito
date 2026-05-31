@@ -46,6 +46,17 @@ export default function ChatAssistant({ isSuppressed = false }) {
     }
   }, [isSuppressed, isOpen]);
 
+  useEffect(() => {
+    const openFromHeader = () => {
+      if (!isSuppressed) {
+        setIsOpen(true);
+      }
+    };
+
+    window.addEventListener('open-chat-assistant', openFromHeader);
+    return () => window.removeEventListener('open-chat-assistant', openFromHeader);
+  }, [isSuppressed]);
+
   const submitMessage = async () => {
     const trimmed = inputValue.trim();
     if (!trimmed || isLoading) return;

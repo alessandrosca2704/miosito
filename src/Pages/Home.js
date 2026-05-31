@@ -1,53 +1,94 @@
-import { Link } from "react-router-dom";
-import '../Css/Home.css'
-import TechStack from "../component/TechStack";
+import { useRef, useState } from "react";
+import ApproachStorySection from "../components/home/ApproachStorySection";
+import FinalCta from "../components/home/FinalCta";
+import HeroSection from "../components/home/HeroSection";
+import SkillsSection from "../components/home/SkillsSection";
+import SystemSection from "../components/home/SystemSection";
+import ValueSection from "../components/home/ValueSection";
+import "../Css/Home.css";
+import { approachSteps, APPROACH_TRANSITION_DELAY_MS } from "../data/home/approachSteps";
+import { heroArchitectureNodes } from "../data/home/heroArchitecture";
+import { skillGroups } from "../data/home/skills";
+import { systemFlowDirections, systemFlowSteps } from "../data/home/systemFlow";
+import { valuePoints } from "../data/home/valuePoints";
+import useDelayedStep from "../hooks/useDelayedStep";
+import useDocumentMeta from "../hooks/useDocumentMeta";
+import useHomeSectionProgress from "../hooks/useHomeSectionProgress";
+import useReducedMotion from "../hooks/useReducedMotion";
 
+const HOME_META_TITLE = "Alessandro Scarimbolo | Ingegnere Informatico, Web App e IA";
+const HOME_META_DESCRIPTION =
+  "Portfolio professionale di Alessandro Scarimbolo: sviluppo web, web app, integrazione IA, IoT e soluzioni software per PMI.";
 
-function Main(){
-    return(
-        <main>
-                        
-            <section className="hero two-col">
-                {/* COLONNA SINISTRA: hero + pills con gradiente */}
-                <div className="hero-left">
-                    <div className="hero-grad" aria-hidden="true" />
-                    <div className="hero-left-inner">
-                    <h1 className="reveal">Siti Web e Integrazione IA nei processi produttivi</h1>
-                    <p className="reveal delay-1">Aiuto le PMI a innovare con tecnologie moderne e scalabili.</p>
+function Home() {
+  const rootRef = useRef(null);
+  const heroRef = useRef(null);
+  const heroVisualRef = useRef(null);
+  const approachRef = useRef(null);
+  const approachStepRef = useRef(0);
+  const systemRef = useRef(null);
+  const [heroStep, setHeroStep] = useState(0);
+  const [approachActiveStep, setApproachActiveStep] = useState(0);
+  const [systemStep, setSystemStep] = useState(0);
+  const reducedMotion = useReducedMotion();
+  const { renderedStep: approachRenderedStep, isTransitioning: isApproachTransitioning } = useDelayedStep(
+    approachActiveStep,
+    APPROACH_TRANSITION_DELAY_MS,
+    reducedMotion
+  );
 
-                    <div className="hero-badges">
-                        <span className="pill primary">Ingegnere informatico • Web App & IA</span>
-                        <span className="pill ok">Disponibile per nuovi progetti</span>
-                    </div>
-                    <div className="hero-template-pill reveal delay-2">
-                        <span className="hero-template-pill__label">Cerchi ispirazione rapida?</span>
-                        <Link to="/templates" className="hero-template-pill__link">Scopri alcuni Templates</Link>
-                    </div>
-                    </div>
-                </div>
-             
-                {/* COLONNA DESTRA: punti + CTA */}
-                <aside className="hero-right">
-                   <h2>Benvenuto nel mio sito!</h2>
-                    <p>Ciao, sono un ingegnere informatico indipendente specializzato nello sviluppo di soluzioni su misura per piccole e medie imprese. Offro servizi di progettazione e realizzazione di soluzioni IA per automazione dei processi produttivi, sviluppo web-app e creazione di siti web moderni e funzionali, con un approccio orientato all’efficienza, alla scalabilità e all’esperienza utente. Collaboro con aziende che vogliono portare innovazione nei propri processi, trasformare le idee in strumenti concreti e migliorare la propria presenza digitale.</p>
-         
+  useDocumentMeta(HOME_META_TITLE, HOME_META_DESCRIPTION);
+  useHomeSectionProgress({
+    heroRef,
+    heroVisualRef,
+    heroStepCount: heroArchitectureNodes.length,
+    setHeroStep,
+    approachRef,
+    approachStepRef,
+    approachStepCount: approachSteps.length,
+    setApproachStep: setApproachActiveStep,
+    systemRef,
+    systemStepCount: systemFlowSteps.length,
+    setSystemStep,
+  });
 
+  const handleApproachStepSelect = (index) => {
+    approachStepRef.current = index;
+    setApproachActiveStep(index);
+  };
 
-                    <div className="hero-ctas reveal delay-2">
-                    <Link to="/servizi" className="btn">Scopri i servizi</Link>
-                    <Link to="/contatti" className="btn secondary">Contattami</Link>
-                    <Link to="/chi-sono" className="btn">Scopri di più su di me.</Link>
-                    </div>
-                    
-                </aside>
-                
-        
-                </section>
-                <TechStack></TechStack> 
-         
-           
-        </main>
-    );
+  return (
+    <main className="home-scroll" ref={rootRef}>
+      <HeroSection
+        activeStep={heroStep}
+        nodes={heroArchitectureNodes}
+        sectionRef={heroRef}
+        visualRef={heroVisualRef}
+      />
+
+      <ApproachStorySection
+        activeStep={approachActiveStep}
+        isTransitioning={isApproachTransitioning}
+        onStepSelect={handleApproachStepSelect}
+        renderedStep={approachRenderedStep}
+        sectionRef={approachRef}
+        steps={approachSteps}
+      />
+
+      <SkillsSection groups={skillGroups} />
+      {/* <ProjectsSection projects={projects} /> */}
+      <ValueSection points={valuePoints} />
+
+      <SystemSection
+        activeStep={systemStep}
+        directions={systemFlowDirections}
+        sectionRef={systemRef}
+        steps={systemFlowSteps}
+      />
+
+      <FinalCta />
+    </main>
+  );
 }
 
-export default Main;
+export default Home;

@@ -5,12 +5,9 @@ import DiaryParserStatus from "./components/DiaryParserStatus";
 import PayslipParserStatus from "./components/PayslipParserStatus";
 import MonthlySummaryCards from "./components/MonthlySummaryCards";
 import ReconciliationTable from "./components/ReconciliationTable";
-import ParsedDiaryPreview from "./components/ParsedDiaryPreview";
-import ParsedPayslipPreview from "./components/ParsedPayslipPreview";
 import AnomalyList from "./components/AnomalyList";
 import ExportJsonButton from "./components/ExportJsonButton";
 import ExcludedPayslipLinesAccordion from "./components/ExcludedPayslipLinesAccordion";
-import PayrollTotalCalculatorModal from "./components/PayrollTotalCalculatorModal";
 import { extractPdfText } from "./parsers/pdfText";
 import {
   extractDiaryPeriod,
@@ -55,8 +52,7 @@ function PayrollCheckerPage() {
   const [privacyConfirmed, setPrivacyConfirmed] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(true);
   const [privacyChecked, setPrivacyChecked] = useState(false);
-  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
-  const [payrollSimulation, setPayrollSimulation] = useState({ input: null, result: null });
+  const [payrollSimulation] = useState({ input: null, result: null });
 
   const aggregatedPayslipLines = useMemo(
     () => aggregatePayslipLines(payslip.lines),

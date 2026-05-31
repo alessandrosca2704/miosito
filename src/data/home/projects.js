@@ -1,0 +1,38 @@
+export const projects = [
+  {
+    title: "Sito dinamico per studio contabile",
+    problem: "Rendere autonoma la gestione dei contenuti e migliorare la presenza digitale dello studio.",
+    stack: ["Sito responsive", "CMS intuitivo", "SEO on-page"],
+    result: "Una presenza web professionale, aggiornabile e orientata alla ricerca locale.",
+    image: "/images/Portfolio/sito-studio.png",
+    link: "https://www.studioscarimbolo.it",
+    linkLabel: "Apri progetto",
+  },
+  {
+    title: "Sistema IoT per controllo industriale",
+    problem: "Monitorare vibrazioni e movimento con sensori per abilitare logiche di manutenzione predittiva.",
+    stack: ["ESP32", "ThingsBoard", "MQTT", "Grafana"],
+    result: "Tesi di laurea con dashboard e raccolta dati per controllo di sistemi industriali.",
+    image: "/images/Portfolio/ESP32.png",
+    link: "/files/Tesi.pdf",
+    linkLabel: "Apri PDF",
+  },
+  {
+    title: "Web app per personaggi D&D 5e",
+    problem: "Gestire dati complessi e interazioni guidate in una interfaccia accessibile.",
+    stack: ["React", "Node.js", "Database"],
+    result: "[Inserire risultato misurabile]",
+    image: "/images/Portfolio/workinprogress.jpg",
+    link: "/webapp",
+    linkLabel: "Dettagli",
+  },
+  {
+    title: "Sito vetrina Gruppo Scout Bari 14",
+    problem: "Creare un sito semplice da consultare e aggiornabile dal cliente.",
+    stack: ["Sito responsive", "Contenuti aggiornabili"],
+    result: "Canale digitale chiaro per comunicazioni e presentazione del gruppo.",
+    image: "/images/Portfolio/SitoSCOUT.png",
+    link: "https://alessandrosca2704.wixsite.com/bari-14",
+    linkLabel: "Apri progetto",
+  },
+];

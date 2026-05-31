@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import "../Css/Contatti.css";
 
 export default function Contatti() {
@@ -54,14 +54,15 @@ export default function Contatti() {
   );
 
   return (
-    <section className="contact">
-      <div className="container contact-grid">
+    <main className="contact secondary-page">
+      <div className="secondary-container contact-grid">
         {/* Colonna info */}
         <aside className="contact-info reveal delay-1">
+          <p className="secondary-kicker">Contatti</p>
           <h1>Contatti</h1>
           <p>Raccontami il tuo progetto: ti rispondo il prima possibile.</p>
 
-          <ul className="info-list" role="list">
+          <ul className="info-list">
             <li>
               <span className="icon">@</span>
               <a href={`mailto:${YOUR_EMAIL}`}>{YOUR_EMAIL}</a>
@@ -146,13 +147,13 @@ export default function Contatti() {
               <p className={`form-status ${status.type}`}>{status.msg}</p>
             )}
 
-            <div className="actions">
+            <div className="contact-actions">
               <button type="submit" className="btn">Invia</button>
               <a href="/files/CV-SITO.pdf" className="btn secondary">Scarica CV / PDF</a>
             </div>
           </form>
         </div>
       </div>
-    </section>
+    </main>
   );
 }
