@@ -20,16 +20,6 @@ const navItems = {
   webapp: { to: paths.webapp, label: "WebApp" },
 };
 
-export const navbarItems = [
-  navItems.home,
-  navItems.about,
-  navItems.contact,
-  navItems.iot,
-  navItems.portfolio,
-  navItems.services,
-  navItems.webapp,
-];
-
 export const sideMenuItems = [
   navItems.home,
   navItems.about,
@@ -38,22 +28,4 @@ export const sideMenuItems = [
     ...navItems.services,
     children: [navItems.portfolio],
   },
-];
-
-export const carouselItems = [
-  navItems.about,
-  navItems.contact,
-  navItems.iot,
-  navItems.services,
-  navItems.portfolio,
-  { ...navItems.webapp, label: "Web-App" },
-];
-
-export const imageNavigationItems = [
-  { ...navItems.about, img: "/images/nav/me.jpg" },
-  { ...navItems.services, img: "/images/nav/servizi.jpg" },
-  { ...navItems.iot, label: "Soluzioni IoT", img: "/images/nav/iot.jpg" },
-  { ...navItems.webapp, label: "Web App", img: "/images/nav/webapp.jpg" },
-  { ...navItems.portfolio, img: "/images/nav/portfolio.jpg" },
-  { ...navItems.contact, img: "/images/nav/contact.jpg" },
 ];
