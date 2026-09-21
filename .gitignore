@@ -23,3 +23,6 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Local development and QA artifacts
+/tmp/
