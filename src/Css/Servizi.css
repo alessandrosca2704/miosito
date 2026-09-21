@@ -484,7 +484,7 @@
   backdrop-filter:blur(14px);
 }
 
-.services-recent .portfolio-card h2{
+.services-recent .portfolio-card :is(h2,h3){
   font-size:clamp(21px,2.1vw,27px);
 }
 

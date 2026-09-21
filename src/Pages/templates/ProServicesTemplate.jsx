@@ -101,7 +101,7 @@ export default function ProServicesTemplate() {
         media: heroMedia,
         ctas: [
           { label: "Prenota una consulenza", href: "#contatto" },
-          { label: "Scarica scheda tecnica", href: "#servizi", variant: "ghost" }
+          { label: "Esplora i servizi del template", href: "#servizi", variant: "ghost" }
         ],
         badges: ["Palette blu profondo", "Struttura premium", "Tempo medio sviluppo 7gg"]
       }}
@@ -205,9 +205,9 @@ export default function ProServicesTemplate() {
                       <li key={feature}>{feature}</li>
                     ))}
                   </ul>
-                  <button type="button" className="btn btn-primary">
+                  <a href="/contatti" className="btn btn-primary">
                     Richiedi proposta
-                  </button>
+                  </a>
                 </article>
               ))}
             </div>

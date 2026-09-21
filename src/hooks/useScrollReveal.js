@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function useScrollReveal(rootRef, resetKey) {
   useEffect(() => {
     const root = rootRef?.current || document;
-    if (!root) return undefined;
+    if (!root || typeof IntersectionObserver === "undefined") return undefined;
 
     const revealItems = root.querySelectorAll("[data-scroll-reveal], .reveal");
     const observer = new IntersectionObserver(

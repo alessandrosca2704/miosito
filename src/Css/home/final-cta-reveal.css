@@ -24,8 +24,8 @@
 }
 
 [data-scroll-reveal]{
-  opacity:0;
-  transform:translateY(28px) scale(.985);
+  opacity:1;
+  transform:none;
   transition:
     opacity .72s ease var(--delay, 0ms),
     transform .72s ease var(--delay, 0ms);

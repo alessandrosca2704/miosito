@@ -30,6 +30,8 @@ function Header(){
         <Link to="/" className="site-header__brand">
           <img
             src="/images/poi.jpg"
+            width="385"
+            height="369"
             alt="Alessandro Scarimbolo"
             className="site-header__avatar"
           />

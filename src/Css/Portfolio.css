@@ -140,7 +140,7 @@
   font-weight:800;
 }
 
-.portfolio-card h2{
+.portfolio-card :is(h2,h3){
   margin:0;
   color:#0f172a;
   font-size:clamp(21px,2.2vw,28px);
@@ -219,7 +219,7 @@
     padding:18px;
   }
 
-  .portfolio-card h2{
+  .portfolio-card :is(h2,h3){
     font-size:23px;
   }
 }

@@ -181,7 +181,7 @@
   border-color: #e2e8f0;
 }
 
-.template-detail__stats h3 {
+.template-detail__stats strong {
   font-size: clamp(1.8rem, 3vw, 2.5rem);
   margin: 0 0 0.3rem;
 }
@@ -882,3 +882,5 @@
     right: 0.75rem;
   }
 }
+.template-demo-note{ padding:16px 20px; border:1px solid currentColor; border-radius:16px; line-height:1.6; }
+.template-demo-note a{ color:inherit; text-decoration:underline; }

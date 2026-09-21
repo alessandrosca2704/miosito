@@ -359,3 +359,9 @@
     filter:drop-shadow(0 0 10px rgba(103,232,249,.5));
   }
 }
+
+/* Let the full hero scroll when its copy cannot fit above the contact bar. */
+@media (min-width:1041px) and (max-height:950px){
+  .home-hero{ min-height:auto; }
+  .home-hero__pin{ position:relative; top:auto; }
+}

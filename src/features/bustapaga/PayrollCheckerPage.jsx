@@ -8,7 +8,6 @@ import ReconciliationTable from "./components/ReconciliationTable";
 import AnomalyList from "./components/AnomalyList";
 import ExportJsonButton from "./components/ExportJsonButton";
 import ExcludedPayslipLinesAccordion from "./components/ExcludedPayslipLinesAccordion";
-import { extractPdfText } from "./parsers/pdfText";
 import {
   extractDiaryPeriod,
   getDiaryMonthlySection,
@@ -99,6 +98,7 @@ function PayrollCheckerPage() {
     }));
 
     try {
+      const { extractPdfText } = await import("./parsers/pdfText");
       const text = await extractPdfText(file);
       const section = getDiaryMonthlySection(text);
       const items = parseDiaryMonthlyItems(text);
@@ -135,6 +135,7 @@ function PayrollCheckerPage() {
     }));
 
     try {
+      const { extractPdfText } = await import("./parsers/pdfText");
       const text = await extractPdfText(file);
       const lines = parsePayslipLines(text);
 

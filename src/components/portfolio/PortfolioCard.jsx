@@ -27,12 +27,13 @@ function ProjectAction({ project }) {
   );
 }
 
-export default function PortfolioCard({ project, index }) {
+export default function PortfolioCard({ project, index, headingLevel = "h2" }) {
+  const Heading = headingLevel;
   return (
     <article className="portfolio-card reveal" style={{ "--delay": `${index * 90}ms` }}>
       <div className="portfolio-card__media">
         {project.img ? (
-          <img src={project.img} alt="" loading="lazy" />
+          <img src={project.img} srcSet={project.srcSet} sizes="(max-width: 760px) 100vw, (max-width: 1160px) 50vw, 33vw" width={project.width} height={project.height} alt="" loading="lazy" decoding="async" />
         ) : (
           <div className="portfolio-card__fallback" aria-hidden="true">
             {project.category}
@@ -47,7 +48,7 @@ export default function PortfolioCard({ project, index }) {
             <span key={tag}>{tag}</span>
           ))}
         </div>
-        <h2>{project.title}</h2>
+        <Heading>{project.title}</Heading>
         <p>{project.desc}</p>
         <ProjectAction project={project} />
       </div>

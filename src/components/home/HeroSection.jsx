@@ -15,7 +15,7 @@ export default function HeroSection({ activeStep, nodes, sectionRef, visualRef }
               scalabili e misurabili.
             </span>
             <span className="home-hero__lead-mobile">
-              Sviluppo web app, soluzioni IoT e integrazioni IA per trasformare processi complessi in strumenti semplici e misurabili.
+              Sviluppo siti web, web app, soluzioni IoT e integrazioni IA per trasformare processi complessi in strumenti semplici e misurabili.
             </span>
           </p>
           <div className="home-hero__actions" aria-label="Azioni principali">

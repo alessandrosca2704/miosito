@@ -1,16 +1,15 @@
-import { BrowserRouter as Router, Navigate, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, StaticRouter } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './Pages/Home';
 import Chisono from './Pages/Chisono';
 import Contatti from './Pages/Contatti';
-import Iot from './Pages/Iot';
 import Portfolio from './Pages/Portfolio';
 import Servizi from './Pages/Servizi';
 import Webapp from './Pages/Web-app';
 import StickyContactBar from './components/StickyContactBar';
-import { useCallback, useState } from 'react';
+import { lazy, Suspense, useCallback, useState } from 'react';
 import ScrollToTop from './components/ScrollToTop';
 import Templates from './Pages/Templates';
 import ProServicesTemplate from './Pages/templates/ProServicesTemplate';
@@ -19,9 +18,14 @@ import NonProfitTemplate from './Pages/templates/NonProfitTemplate';
 import SmeTemplate from './Pages/templates/SmeTemplate';
 import RetailTemplate from './Pages/templates/RetailTemplate';
 import ChatAssistant from './components/ChatAssistant';
-import PayrollCheckerPage from './features/bustapaga/PayrollCheckerPage';
+import NotFound from './Pages/NotFound';
+import ServiceDetail from './Pages/ServiceDetail';
+import useDocumentMeta from './hooks/useDocumentMeta';
 import { paths } from './data/navigation';
 import useScrollReveal from './hooks/useScrollReveal';
+
+const PayrollCheckerPage = lazy(() => import('./features/bustapaga/PayrollCheckerPage'));
+
 
 
 function RevealOnRouteChange() {
@@ -31,8 +35,9 @@ function RevealOnRouteChange() {
   return null;
 }
 
-function AppLayout({ isMobileContactOpen, handleMobileContactState }) {
+function AppLayout({ isMobileContactOpen, handleMobileContactState, payrollPage }) {
   const { pathname } = useLocation();
+  useDocumentMeta(pathname);
   const hideOnTemplates = pathname.startsWith("/templates/")
 
   return (
@@ -40,16 +45,18 @@ function AppLayout({ isMobileContactOpen, handleMobileContactState }) {
       <ScrollToTop behavior="smooth" />
       <RevealOnRouteChange />
       <Header />
+      <Suspense fallback={<main className="secondary-container" aria-busy="true"><p>Caricamento dello strumento…</p></main>}>
       <Routes>
           <Route path={paths.home} element={<Home />} />
           <Route path={paths.about} element={<Chisono />} />
           <Route path={paths.contact} element={<Contatti />} />
-          <Route path={paths.iot} element={<Iot />} />
+          <Route path="/iot" element={<Navigate to={paths.services} replace />} />
           <Route path={paths.portfolio} element={<Portfolio />} />
           <Route path={paths.services} element={<Servizi />} />
           <Route path={paths.webapp} element={<Webapp />} />
           <Route path={paths.templates} element={<Templates />} />
-          <Route path="/Servizi" element={<Navigate to={paths.services} replace />} />
+          <Route path="/sviluppo-siti-web" element={<ServiceDetail service="websites" />} />
+          <Route path="/integrazione-ai" element={<ServiceDetail service="ai" />} />
           <Route path="/web-app" element={<Navigate to={paths.webapp} replace />} />
           <Route path="/portfolio/webapp" element={<Navigate to={paths.webapp} replace />} />
           <Route path='/templates/pro-services' element={<ProServicesTemplate />} />
@@ -57,8 +64,10 @@ function AppLayout({ isMobileContactOpen, handleMobileContactState }) {
           <Route path='/templates/nonprofit' element={<NonProfitTemplate />} />
           <Route path='/templates/sme' element={<SmeTemplate />} />
           <Route path='/templates/retail' element={<RetailTemplate />} />
-          <Route path='/bustapaga' element={<PayrollCheckerPage />} />
+          <Route path='/bustapaga' element={payrollPage || <PayrollCheckerPage />} />
+          <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
 
       {!hideOnTemplates && <ChatAssistant isSuppressed={isMobileContactOpen} />}
       {!hideOnTemplates && (
@@ -71,7 +80,8 @@ function AppLayout({ isMobileContactOpen, handleMobileContactState }) {
 
 
 
-function App() {
+function App({ location, payrollPage }) {
+  const Routing = location !== undefined ? StaticRouter : Router;
   const [isMobileContactOpen, setIsMobileContactOpen] = useState(false);
   const handleMobileContactState = useCallback((isVisible) => {
     setIsMobileContactOpen(isVisible);
@@ -79,12 +89,13 @@ function App() {
 
   return (
     <div>
-      <Router>
+      <Routing location={location}>
         <AppLayout
+          payrollPage={payrollPage}
           isMobileContactOpen={isMobileContactOpen}
           handleMobileContactState={handleMobileContactState}
         />
-      </Router>
+      </Routing>
     </div>
   );
 }

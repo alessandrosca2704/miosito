@@ -55,7 +55,7 @@ export default function useHomeSectionProgress({
 
       if (heroRef.current && heroVisualRef.current) {
         const rect = heroRef.current.getBoundingClientRect();
-        const isPinnedHero = window.innerWidth > 1040;
+        const isPinnedHero = window.innerWidth > 1040 && window.innerHeight > 950;
         const sectionTop = window.scrollY + rect.top;
         const progressRange = isPinnedHero
           ? Math.max(rect.height - viewport * 1.05, viewport * 1.35)

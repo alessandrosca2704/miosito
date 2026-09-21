@@ -4,6 +4,7 @@ import "../Css/Templates.css";
 const templates = [
   {
     id: "pro-services",
+    previewHeight: 652,
     title: "Studio Professionale",
     subtitle: "Contabili - Assicuratori - Consulenti",
     blurb:
@@ -12,6 +13,7 @@ const templates = [
   },
   {
     id: "craftsmen",
+    previewHeight: 652,
     title: "Artigiani & Professionisti di settore",
     subtitle: "Falegnami - Idraulici - Designer",
     blurb:
@@ -20,6 +22,7 @@ const templates = [
   },
   {
     id: "nonprofit",
+    previewHeight: 628,
     title: "Associazioni",
     subtitle: "ETS - Onlus - No profit",
     blurb:
@@ -28,6 +31,7 @@ const templates = [
   },
   {
     id: "sme",
+    previewHeight: 641,
     title: "PMI & Startup",
     subtitle: "Prodotti digitali e servizi B2B",
     blurb:
@@ -36,6 +40,7 @@ const templates = [
   },
   {
     id: "retail",
+    previewHeight: 629,
     title: "Negozi & Attivita commerciali",
     subtitle: "Local shop - Boutique - Food",
     blurb:
@@ -55,8 +60,10 @@ function TemplateCard({ template }) {
       <div className="template-preview" data-template={template.id}>
         <div className="template-preview__hero">
           <img
-            src={`${process.env.PUBLIC_URL}/images/preview-templates/${template.id}.jpg`}
+            src={`${process.env.PUBLIC_URL}/images/preview-templates/${template.id}.webp`}
             alt={`Anteprima ${template.title}`}
+            width="1440"
+            height={template.previewHeight}
             loading="lazy"
           />
         </div>
@@ -89,8 +96,7 @@ export default function Templates() {
         <span className="eyebrow">Libreria</span>
         <h1>Template one-page pronti per il tuo business</h1>
         <p>
-          Seleziono layout moderni e flessibili per professionisti, imprese e associazioni. Ogni template e
-          ottimizzato per performance, SEO e conversione, personalizzabile in pochi giorni.
+          Seleziono layout moderni e flessibili per professionisti, imprese e associazioni. Sono esempi dimostrativi: contenuti, immagini e funzionalità vengono definiti per il tuo progetto.
         </p>
       </section>
 

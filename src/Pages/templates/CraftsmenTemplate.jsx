@@ -79,7 +79,7 @@ export default function CraftsmenTemplate() {
         media: heroMedia,
         ctas: [
           { label: "Richiedi preventivo", href: "#richiesta" },
-          { label: "Scarica brochure", href: "#lavori", variant: "ghost" }
+          { label: "Guarda gli esempi di lavori", href: "#lavori", variant: "ghost" }
         ],
         badges: ["Disponibilità 24/7", "Hero immersivo"]
       }}

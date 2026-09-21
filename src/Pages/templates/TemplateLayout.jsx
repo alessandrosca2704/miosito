@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "../../Css/TemplateDetail.css";
 
 /**
@@ -45,7 +46,18 @@ export default function TemplateLayout({
   }, [id, stickyCta]);
 
   return (
-    <main className={`template-detail template-detail--${id} theme-${theme}`}>
+    <main className={`template-detail template-detail--${id} theme-${theme}`} onClick={(event) => {
+      const target = event.target.closest('a[href]');
+      if (target?.getAttribute('href') === `#${stickyCta?.id || "contatto"}`) {
+        event.preventDefault();
+        setIsStickyOpen(true);
+      }
+    }}>
+      <aside className="template-demo-note" aria-label="Informazioni sulla demo">
+        <p><strong>Layout dimostrativo.</strong> Nomi, risultati, certificazioni, prezzi ed eventi sono esempi illustrativi, non referenze o offerte reali.</p>
+        <Link to="/templates">Tutti i template</Link>{" · "}
+        <Link to="/contatti">Richiedi un sito personalizzato</Link>
+      </aside>
       {quickNav && quickNav.items?.length > 0 && (
         <nav className="template-detail__quick-nav reveal" aria-label={quickNav.label}>
           <p>{quickNav.label}</p>
@@ -92,7 +104,7 @@ export default function TemplateLayout({
 
         {hero?.media && (
           <figure className="template-detail__hero-media">
-            <img src={hero.media.src} alt={hero.media.alt || hero.title} loading="lazy" />
+            <img src={hero.media.src} alt={hero.media.alt || hero.title} loading="eager" />
             {hero.media.caption && <figcaption>{hero.media.caption}</figcaption>}
           </figure>
         )}
@@ -102,7 +114,7 @@ export default function TemplateLayout({
         <section className="template-detail__stats reveal" aria-label="Indicatori principali">
           {stats.map((stat) => (
             <article key={stat.label}>
-              <h3>{stat.value}</h3>
+              <strong>{stat.value}</strong>
               <p>{stat.label}</p>
               {stat.detail && <span>{stat.detail}</span>}
             </article>
@@ -144,6 +156,8 @@ export default function TemplateLayout({
             className={`template-detail__sticky-cta${
               isStickyOpen ? "" : " template-detail__sticky-cta--hidden"
             }`}
+            inert={!isStickyOpen}
+            aria-hidden={!isStickyOpen}
             aria-live="polite"
             role="dialog"
             aria-modal="false"
@@ -170,7 +184,7 @@ export default function TemplateLayout({
               )}
             </div>
 
-            <form>
+            <form onSubmit={(event) => event.preventDefault()}>
               {stickyCta.fields?.map((field) => (
                 <label key={field.name}>
                   <span>{field.label}</span>
@@ -181,7 +195,8 @@ export default function TemplateLayout({
                   )}
                 </label>
               ))}
-              <button type="button">{stickyCta.ctaLabel || "Invia richiesta"}</button>
+              <p>Questo modulo è dimostrativo e non invia dati.</p>
+              <Link to="/contatti" className="btn btn-primary">Contatta Alessandro per il tuo sito</Link>
               {stickyCta.helper && <small>{stickyCta.helper}</small>}
             </form>
           </aside>

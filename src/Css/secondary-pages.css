@@ -95,3 +95,14 @@
     scroll-behavior:auto !important;
   }
 }
+
+.service-content{ padding-bottom:72px; }
+.service-content__section{ max-width:800px; margin:28px 0; }
+.service-content__section h2{ color:#0f172a; font-size:clamp(24px,4vw,32px); }
+.service-content__section p{ color:#475569; line-height:1.75; font-size:17px; }
+.service-content__links{ display:flex; flex-wrap:wrap; gap:16px 28px; padding:24px 0; }
+.service-content__links a{ color:#312e81; font-weight:600; }
+.service-links-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); gap:24px; padding:28px 0; }
+.service-links-grid article{ padding:24px; border:1px solid rgba(15,23,42,.08); border-radius:20px; background:rgba(255,255,255,.65); }
+.service-links-grid p{ color:#475569; line-height:1.7; }
+.service-links-grid a{ color:#312e81; font-weight:600; }

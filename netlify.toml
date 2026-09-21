@@ -15,9 +15,21 @@
   for = "/bustapaga"
   [headers.values]
     Cache-Control = "no-store"
+    X-Robots-Tag = "noindex"
 
 [[headers]]
   for = "/bustapaga/*"
   [headers.values]
     Cache-Control = "no-store"
+    X-Robots-Tag = "noindex"
 
+[[headers]]
+  for = "/bustapaga.html"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex"
+
+
+# Keep the explicit extensionless routes and canonical URLs stable.
+[build.processing.html]
+  pretty_urls = false

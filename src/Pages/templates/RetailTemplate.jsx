@@ -100,9 +100,9 @@ export default function RetailTemplate() {
                   <h3>{product.name}</h3>
                   <strong>{product.price}</strong>
                   <p>{product.note}</p>
-                  <button type="button" className="btn btn-primary">
+                  <a href="/contatti" className="btn btn-primary">
                     Aggiungi
-                  </button>
+                  </a>
                 </article>
               ))}
             </div>

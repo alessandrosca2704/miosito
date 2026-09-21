@@ -183,9 +183,9 @@ export default function SmeTemplate() {
                       <li key={feature}>{feature}</li>
                     ))}
                   </ul>
-                  <button type="button" className="btn btn-primary">
+                  <a href="/contatti" className="btn btn-primary">
                     Inizia ora
-                  </button>
+                  </a>
                 </article>
               ))}
             </div>

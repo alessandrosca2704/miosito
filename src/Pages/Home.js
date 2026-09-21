@@ -12,13 +12,9 @@ import { skillGroups } from "../data/home/skills";
 import { systemFlowDirections, systemFlowSteps } from "../data/home/systemFlow";
 import { valuePoints } from "../data/home/valuePoints";
 import useDelayedStep from "../hooks/useDelayedStep";
-import useDocumentMeta from "../hooks/useDocumentMeta";
 import useHomeSectionProgress from "../hooks/useHomeSectionProgress";
 import useReducedMotion from "../hooks/useReducedMotion";
 
-const HOME_META_TITLE = "Alessandro Scarimbolo | Ingegnere Informatico, Web App e IA";
-const HOME_META_DESCRIPTION =
-  "Portfolio professionale di Alessandro Scarimbolo: sviluppo web, web app, integrazione IA, IoT e soluzioni software per PMI.";
 
 function Home() {
   const rootRef = useRef(null);
@@ -37,7 +33,6 @@ function Home() {
     reducedMotion
   );
 
-  useDocumentMeta(HOME_META_TITLE, HOME_META_DESCRIPTION);
   useHomeSectionProgress({
     heroRef,
     heroVisualRef,

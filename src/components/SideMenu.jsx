@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 import { sideMenuItems } from "../data/navigation";
@@ -6,6 +6,10 @@ import "../Css/SideMenu.css";
 
 export default function SideMenu() {
   const { pathname } = useLocation();
+  const [mounted, setMounted] = useState(false);
+  const triggerRef = useRef(null);
+  const drawerRef = useRef(null);
+  useEffect(() => setMounted(true), []);
   const [open, setOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState({});
 
@@ -39,9 +43,26 @@ export default function SideMenu() {
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const drawer = drawerRef.current;
+    const trigger = triggerRef.current;
+    drawer?.querySelector('button')?.focus();
+    const trapFocus = (event) => {
+      if (event.key !== "Tab") return;
+      const items = [...drawer.querySelectorAll('a[href], button')].filter(item => !item.closest('[inert]'));
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first?.focus();
+      }
+    };
+    drawer?.addEventListener('keydown', trapFocus);
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      drawer?.removeEventListener("keydown", trapFocus);
+      trigger?.focus();
     };
   }, [open]);
 
@@ -54,7 +75,7 @@ export default function SideMenu() {
 
   const drawer = (
     <div className={`sidemenu-overlay ${open ? "show" : ""}`} onMouseDown={onOverlayClick}>
-      <aside className={`sidemenu-drawer ${open ? "open" : ""}`} aria-hidden={!open}>
+      <aside id="site-menu" ref={drawerRef} inert={!open} className={`sidemenu-drawer ${open ? "open" : ""}`} aria-hidden={!open}>
         <div className="sidemenu-header">
           <div className="sidemenu-brand">
             <span className="sidemenu-brandmark" aria-hidden="true">AS</span>
@@ -103,7 +124,7 @@ export default function SideMenu() {
                     </button>
                   </div>
 
-                  <ul className={`submenu ${expanded ? "open" : ""}`}>
+                  <ul inert={!expanded} className={`submenu ${expanded ? "open" : ""}`}>
                     {it.children.map((ch) => {
                       const childActive = pathname === ch.to;
                       return (
@@ -135,7 +156,7 @@ export default function SideMenu() {
 
   return (
     <>
-      <button className="hamburger" aria-expanded={open} onClick={() => setOpen(true)}>
+      <button ref={triggerRef} aria-controls="site-menu" className="hamburger" aria-expanded={open} onClick={() => setOpen(true)}>
         <span className="hamburger__icon" aria-hidden="true">
           <span />
           <span />
@@ -143,7 +164,7 @@ export default function SideMenu() {
         </span>
         <span className="hamburger__label">Menu</span>
       </button>
-      {createPortal(drawer, document.body)}
+      {mounted ? createPortal(drawer, document.body) : drawer}
     </>
   );
 }

@@ -24,7 +24,7 @@ export default function ServicesRecentProjects() {
 
       <div className="services-recent__grid">
         {recentProjects.map((project, index) => (
-          <PortfolioCard key={project.id} project={project} index={index} />
+          <PortfolioCard headingLevel="h3" key={project.id} project={project} index={index} />
         ))}
       </div>
     </section>

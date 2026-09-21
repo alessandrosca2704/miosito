@@ -12,7 +12,7 @@ function Chisono() {
         <div className="secondary-container about-hero__inner">
           <div className="about-hero__copy reveal">
             <p className="secondary-kicker">Chi sono</p>
-            <h1>Metodo tecnico, responsabilita operativa e soluzioni concrete.</h1>
+            <h1>Alessandro Scarimbolo, ingegnere informatico.</h1>
             <p>
               Sono Alessandro, ingegnere informatico. Unisco formazione tecnica,
               sviluppo freelance ed esperienza in contesti operativi complessi
@@ -49,7 +49,8 @@ function Chisono() {
         </div>
       </header>
 
-      <section className="about-services secondary-container" aria-label="Aree di lavoro">
+      <section className="about-services secondary-container" aria-labelledby="about-services-title">
+        <h2 id="about-services-title" className="visually-hidden">Aree di lavoro</h2>
         {aboutServices.map((service, index) => (
           <AboutServiceCard key={service.title} service={service} index={index} />
         ))}

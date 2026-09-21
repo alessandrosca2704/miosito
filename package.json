@@ -17,9 +17,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && node scripts/prerender.cjs",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "seo:assets": "node scripts/seo-assets.cjs",
+    "prebuild": "npm run seo:assets",
+    "lint": "eslint src scripts --ext .js,.jsx,.cjs",
+    "test:seo": "node scripts/verify-seo.cjs",
+    "postbuild": "npm run test:seo",
+    "test:browser": "node scripts/browser-seo.cjs"
   },
   "eslintConfig": {
     "extends": [
