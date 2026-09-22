@@ -43,12 +43,31 @@ const server = http.createServer((req, res) => {
     for (const route of [...Object.keys(routes), '/missing-seo-test']) {
       const response = await page.goto(origin + route, { waitUntil: 'networkidle0' });
       assert.equal(response.status(), routes[route] ? 200 : 404, route);
-      await page.waitForFunction(() => document.querySelector('.sidemenu-overlay')?.parentElement === document.body);
+      if (!route.startsWith('/templates/')) await page.waitForFunction(() => document.querySelector('.sidemenu-overlay')?.parentElement === document.body);
       assert.equal(await page.$$eval('h1', elements => elements.length), 1, route);
       if (routes[route]) assert.equal(await page.title(), routes[route].title, route);
-      assert.equal(await page.$$eval('.sidemenu-overlay', elements => elements.length), 1, `duplicate menu: ${route}`);
+      assert.equal(await page.$$eval('.sidemenu-overlay', elements => elements.length), route.startsWith('/templates/') ? 0 : 1, `menu count: ${route}`);
     }
     console.log('Direct-route checks completed; runtime errors:', errors);
+    for (const route of ['/sviluppo-siti-web', '/integrazione-ai', '/webapp']) {
+      await page.goto(origin + route, { waitUntil: 'networkidle0' });
+      await page.screenshot({ path: `/tmp/service-${route.slice(1)}-desktop.png`, fullPage: true });
+    }
+    await page.goto(origin + '/sviluppo-siti-web', { waitUntil: 'networkidle0' });
+    const templateIds = ['pro-services', 'craftsmen', 'nonprofit', 'sme', 'retail'];
+    for (let i = 0; i < templateIds.length; i++) {
+      const button = `.service-template-options button:nth-child(${i + 1})`;
+      await page.$eval(button, element => element.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await page.focus(button);
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(id => document.querySelector('.service-template-image').getAttribute('href') === `/templates/${id}`, {}, templateIds[i]);
+      assert.equal(await page.$$eval('.service-template-options button[aria-pressed="true"]', elements => elements.length), 1);
+      await page.waitForFunction(id => { const image = document.querySelector('.service-template-image img'); return image.src.endsWith(`/${id}.webp`) && image.complete && image.naturalWidth > 0; }, {}, templateIds[i]);
+    }
+    await page.locator('.service-template-copy .btn').click();
+    await page.waitForFunction(() => window.location.pathname === '/templates/retail');
+    console.log('Template selector and demo navigation passed.');
+
     await page.goto(origin, { waitUntil: 'networkidle0' });
     await page.screenshot({path: '/tmp/seo-home-desktop.png'});
     // Move the CTA above the fixed contact bar before a real pointer click.
@@ -68,6 +87,10 @@ const server = http.createServer((req, res) => {
       await page.goto(origin + route, { waitUntil: 'networkidle0' });
       const size = await page.evaluate(() => ({ viewport: window.innerWidth, width: document.documentElement.scrollWidth }));
       assert.ok(size.width <= size.viewport + 1, `mobile overflow: ${route} ${JSON.stringify(size)}`);
+      if (['/sviluppo-siti-web', '/integrazione-ai', '/webapp'].includes(route)) {
+        await page.screenshot({ path: `/tmp/service-${route.slice(1)}-mobile.png`, fullPage: true });
+      }
+
     }
     await page.goto(origin, { waitUntil: 'networkidle0' });
     await page.screenshot({path: '/tmp/seo-home-mobile.png'});
@@ -91,7 +114,7 @@ const server = http.createServer((req, res) => {
         return result;
       });
       assert.ok(opacity > 0, `invisible without JS: ${route}`);
-      assert.ok((await noJs.$$eval('footer a', elements => elements.length)) >= 6);
+      assert.equal(await noJs.$eval('.footer-services__button', element => element.getAttribute('href')), '/servizi');
     }
     await noJs.close();
     await page.bringToFront();

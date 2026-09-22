@@ -68,12 +68,22 @@
   margin-left:auto;
 }
 
+.stickybar__icons{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+.sb-btn:focus-visible{
+  outline:3px solid #4338ca;
+  outline-offset:3px;
+}
 .sb-btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:8px;
-  height:42px;
+  height:44px;
   padding:0 14px;
   border-radius:999px;
   text-decoration:none;
@@ -103,7 +113,9 @@
 .sb-btn.ghost{
   background:rgba(15,23,42,.05);
   border-color:rgba(15,23,42,.12);
-  margin-left: 8px;
+  width:44px;
+  padding:0;
+  flex:0 0 44px;
 }
 
 .has-sticky-bottom{
@@ -172,15 +184,16 @@
   .stickybar__actions{
     grid-column:1 / -1;
     width:100%;
-    flex-direction:row;
-    justify-content:space-between;
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:center;
     margin-left:0;
     gap:8px;
   }
 
   .sb-btn{
-    flex:1 1 0;
-    height:40px;
+    flex:0 0 auto;
+    height:44px;
     padding:0 12px;
     justify-content:center;
     font-size:13px;
@@ -193,10 +206,7 @@
   }
 
   .sb-btn.primary span{
-    max-width:130px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    white-space:normal;
   }
 
   .stickybar-toggle{
@@ -207,10 +217,10 @@
     font-size:14px;
   }
 
-  .stickbar__icons{
+  .stickybar__icons{
     display: flex;
     flex-direction: row;
-    justify-content:flex-start;
+    justify-content:center;
     gap:8px;
   }
 }

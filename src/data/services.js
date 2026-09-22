@@ -60,5 +60,5 @@ export const serviceProcessSteps = [
 export const serviceRecentProjectIds = [
   "studio-contabile",
   "scout-bari",
-  "dnd-webapp",
+  "condomini-saas",
 ];

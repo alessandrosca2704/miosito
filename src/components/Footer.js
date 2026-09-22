@@ -3,16 +3,14 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer>
-      <nav className="footer-links" aria-label="Navigazione a piè di pagina">
-        <Link to="/servizi">Servizi</Link>
-        <Link to="/sviluppo-siti-web">Siti web</Link>
-        <Link to="/webapp">Web app</Link>
-        <Link to="/integrazione-ai">Integrazioni IA</Link>
-        <Link to="/portfolio">Portfolio</Link>
-        <Link to="/templates">Template</Link>
-        <Link to="/chi-sono">Chi sono</Link>
-        <Link to="/contatti">Contatti</Link>
-      </nav>
+      <section className="footer-services" aria-labelledby="footer-services-heading">
+        <div>
+          <span className="footer-services__eyebrow">Dall’idea al progetto</span>
+          <h2 id="footer-services-heading">Scopri cosa possiamo realizzare insieme.</h2>
+          <p>Siti web, applicazioni su misura e integrazioni IA: trova il servizio adatto alla tua attività.</p>
+        </div>
+        <Link className="footer-services__button" to="/servizi">Esplora i miei servizi <span aria-hidden="true">↗</span></Link>
+      </section>
       <p>Alessandro Scarimbolo · Bari, Italia · Da remoto e in presenza su accordo</p>
       <p>Realizzato da <b>Alessandro Scarimbolo</b> &copy; 2026 - Tutti i diritti riservati</p>
     </footer>

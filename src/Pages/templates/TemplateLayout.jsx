@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../Css/TemplateDetail.css";
 
 /**
@@ -17,6 +17,14 @@ export default function TemplateLayout({
   stickyCta,
   quickNav
 }) {
+  const navigate = useNavigate();
+  const handleBack = (event) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (window.history.state?.idx > 0) {
+      event.preventDefault();
+      navigate(-1);
+    }
+  };
   const [isStickyOpen, setIsStickyOpen] = useState(false);
   const stickyRef = useRef(null);
 
@@ -53,6 +61,9 @@ export default function TemplateLayout({
         setIsStickyOpen(true);
       }
     }}>
+      <Link to="/templates" className="template-back" onClick={handleBack} aria-label="Torna alla pagina precedente o al catalogo template" title="Torna indietro">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14" /></svg>
+      </Link>
       <aside className="template-demo-note" aria-label="Informazioni sulla demo">
         <p><strong>Layout dimostrativo.</strong> Nomi, risultati, certificazioni, prezzi ed eventi sono esempi illustrativi, non referenze o offerte reali.</p>
         <Link to="/templates">Tutti i template</Link>{" · "}

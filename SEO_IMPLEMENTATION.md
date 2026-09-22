@@ -191,3 +191,14 @@ Riferimenti per il comportamento di hosting:
 [404 e normalizzazione slash Netlify](https://docs.netlify.com/manage/routing/redirects/redirect-options/),
 [configurazione Pretty URLs](https://docs.netlify.com/build/configure-builds/file-based-configuration/).
 Il comportamento CDN e l'invio reale dei form vanno confermati dopo il deploy.
+
+## Aggiornamento grafico delle pagine servizio
+
+Le pagine `/sviluppo-siti-web`, `/integrazione-ai` e `/webapp` usano ora un layout condiviso in `src/components/services/ServiceLanding.jsx`, con stili circoscritti in `src/Css/service-landing.css` e contenuti in `src/data/serviceDetails.js`.
+
+- Siti web: anteprime dei template esistenti e selettore di cinque demo, con collegamenti al catalogo e alla demo scelta. I dati dei template sono condivisi con il catalogo tramite `src/data/templates.js`.
+- IA: diagramma illustrativo del processo, casi d'uso e pulsante per aprire l'assistente esistente.
+- Web app: dashboard illustrativa con dati dimostrativi e sezione sul progetto SaaS per la gestione dei condomini in sviluppo.
+- Tutte e tre: apertura a due colonne, schede delle possibilità, percorso in quattro passaggi, approfondimenti e invito finale al contatto. Layout adattato ai dispositivi mobili e navigazione da tastiera.
+
+Metadati, canonical e politiche di indicizzazione restano centralizzati. Nessuna nuova dipendenza. Verificati build, controlli SEO, lint, tre test unitari e test Chromium: selettore template da tastiera, apertura demo, idratazione, assenza di overflow a 390 px e contenuti leggibili senza JavaScript. Le anteprime desktop e mobile sono state controllate durante lo sviluppo; le chiamate a servizi esterni sono bloccate nei test browser.

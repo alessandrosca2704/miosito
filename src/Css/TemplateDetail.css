@@ -884,3 +884,8 @@
 }
 .template-demo-note{ padding:16px 20px; border:1px solid currentColor; border-radius:16px; line-height:1.6; }
 .template-demo-note a{ color:inherit; text-decoration:underline; }
+
+.template-back{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;width:46px;height:46px;flex-shrink:0;border-radius:50%;border:1px solid currentColor;color:inherit;background:transparent;text-decoration:none;transition:background .2s,transform .2s}
+.template-back:hover{background:rgba(128,128,128,.15);transform:translateX(-2px)}
+.template-back:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.template-back{transition:none}}

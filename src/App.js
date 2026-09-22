@@ -44,7 +44,7 @@ function AppLayout({ isMobileContactOpen, handleMobileContactState, payrollPage 
     <>
       <ScrollToTop behavior="smooth" />
       <RevealOnRouteChange />
-      <Header />
+      {!hideOnTemplates && <Header />}
       <Suspense fallback={<main className="secondary-container" aria-busy="true"><p>Caricamento dello strumento…</p></main>}>
       <Routes>
           <Route path={paths.home} element={<Home />} />
