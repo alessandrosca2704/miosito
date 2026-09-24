@@ -2,7 +2,7 @@
 
 A responsive personal portfolio and service website for Alessandro Scarimbolo, an IT engineer focused on web applications, AI-enabled workflows, IoT prototypes, and digital solutions for small and medium-sized businesses.
 
-The project is a React single-page application deployed on Netlify. Alongside the public portfolio, it includes interactive business-template demos, a privacy-conscious payroll reconciliation utility, Netlify contact-form integration, and an AI chat assistant backed by a serverless function.
+The project is a React single-page application deployed on Netlify. Alongside the public portfolio, it includes interactive business-template demos, a privacy-conscious payroll reconciliation utility, Cal.com appointment booking, and an AI chat assistant backed by a serverless function.
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ The project is a React single-page application deployed on Netlify. Alongside th
 - [Routes](#routes)
 - [Content and Customization](#content-and-customization)
 - [Payroll Reconciliation Tool](#payroll-reconciliation-tool)
-- [Contact Form](#contact-form)
+- [Contact and Booking](#contact-and-booking)
 - [Chat Assistant and Netlify Function](#chat-assistant-and-netlify-function)
 - [Environment Variables](#environment-variables)
 - [SEO and PWA](#seo-and-pwa)
@@ -33,7 +33,7 @@ The project is a React single-page application deployed on Netlify. Alongside th
 
 This website presents professional services, technical skills, selected projects, and contact options in a mobile-friendly experience. Its primary audience is professionals and SMEs looking for custom websites and web apps, AI integration, workflow automation, IoT proof-of-concept development, or technical consulting.
 
-The application is primarily frontend-driven. It does **not** contain a traditional backend server or database. Server-side chat requests are handled by one Netlify Function, while contact messages use Netlify Forms.
+The application is primarily frontend-driven. It does **not** contain a traditional backend server or database. Server-side chat requests are handled by one Netlify Function, while contact options use Cal.com, email, phone and WhatsApp.
 
 ## Key Features
 
@@ -42,7 +42,7 @@ The application is primarily frontend-driven. It does **not** contain a traditio
 - Data-driven project showcase
 - Five interactive one-page business template demos
 - Browser-based PDF payroll reconciliation tool
-- Netlify contact form with email fallback
+- Cal.com booking with direct email contact
 - AI-powered chat assistant in Italian
 - Desktop, mobile, carousel, and sticky-contact navigation
 - Scroll-triggered animation and reduced-motion support
@@ -109,7 +109,7 @@ npx netlify link
 npx netlify dev
 ```
 
-Netlify CLI prints the local URL, commonly `http://localhost:8888`. Use this mode to test `/.netlify/functions/chatAssistant`, form submissions, and deployment redirects.
+Netlify CLI prints the local URL, commonly `http://localhost:8888`. Use this mode to test `/.netlify/functions/chatAssistant`, booking configuration and deployment redirects.
 
 ## Available Scripts
 
@@ -179,7 +179,7 @@ miosito/
 | `/templates/nonprofit` | Association and nonprofit demo |
 | `/templates/sme` | SME and startup demo |
 | `/templates/retail` | Retail and local-business demo |
-| `/contatti` | Contact information and inquiry form |
+| `/contatti` | Contact information and call booking |
 | `/bustapaga` | Local payroll PDF reconciliation utility |
 
 Legacy URLs `/Servizi`, `/web-app`, and `/portfolio/webapp` redirect to canonical routes. Netlify's catch-all rule sends direct SPA requests to `index.html`.
@@ -252,13 +252,22 @@ The current code keeps extracted content in React's in-memory state. It does not
 
 Netlify sends `Cache-Control: no-store` for this route. The parser requires selectable text, so protected or image-only PDFs need preprocessing or a future OCR feature. This utility supports review but does not replace a payroll or accounting professional.
 
-## Contact Form
+## Contact and Booking
 
-The contact page submits URL-encoded data to Netlify using the form name `contatti`. A matching hidden form in `public/index.html` enables build-time detection.
+The contact page pairs a Cal.com booking popup with email, phone and WhatsApp. The previous contact form and its Netlify registration have been removed. `src/components/contact/CalBooking.jsx` uses the official `@calcom/embed-react` package (React 19 compatible), dynamically imported only on click. The page uses the site's light theme and existing CSS buttons. No analytics or backend credentials are required.
 
-The form provides required fields, email validation, a spam honeypot, status messages, and an email-client fallback. It is best tested on a Netlify deploy or with `netlify dev`, because `npm start` does not reproduce the entire Forms pipeline.
+### Cal.com setup
 
-After deployment, verify submissions and notifications under **Netlify → Forms**.
+1. In Cal.com, create a public event type and configure its duration, availability, timezone, connected calendar and meeting location/video provider.
+2. Copy `.env.example` to `.env.local` and set `REACT_APP_CALCOM_EVENT_URL` to the event's public URL, such as `https://cal.com/your-profile/your-event`. Use a canonical event URL without query parameters. This value is public and included in the browser bundle; never put an API key here.
+3. Restart local development. For Netlify, set the same variable in the build environment and rebuild/deploy. The prerender step loads CRA's environment too, ensuring identical server and browser markup.
+4. To change event type later, update this variable and rebuild.
+
+An absent/invalid URL shows an email link instead of a broken booking button. If calendar loading fails, a direct booking link appears. Email and phone remain available without JavaScript. SDK failures and a 15-second loading timeout show a message with alternatives. Only public HTTPS event links on `cal.com` are supported; custom domains require an explicit extension to the configuration.
+
+Before publishing, check the real event on desktop and mobile: open/close, keyboard focus and Escape, date/time selection, timezone, confirmation and notification delivery. Local mocked checks cannot verify account availability or actual booking delivery. No bookings are created automatically by tests. The SDK supports `bookingSuccessfulV2` if an existing analytics system is added in the future; no tracking is installed now.
+
+On screens up to 640px, service landing pages use lighter secondary links, compact spacing and expandable approach explanations. Above this breakpoint the desktop presentation is preserved. Without JavaScript the explanations remain visible. The contact page uses two columns on desktop and one below 900px.
 
 ## Chat Assistant and Netlify Function
 
@@ -376,11 +385,11 @@ Confirm `_redirects` exists in `build/`, Netlify publishes `build`, and the fina
 - Inspect `chatAssistant` Function logs.
 - Never place a production key in `ChatAssistant.jsx`.
 
-### Contact messages do not arrive
+### Booking button does not appear
 
-- Keep the `contatti` name identical in `public/index.html` and `Contatti.js`.
-- Test a Netlify deploy or `netlify dev`.
-- Check Netlify Forms, spam detection, and notifications.
+- Set a valid public event URL in `REACT_APP_CALCOM_EVENT_URL`.
+- For Netlify Dev, make the variable available in the dev context and link the correct site.
+- Restart development or rebuild the deployment after changing the variable.
 
 ### A payroll PDF cannot be read
 

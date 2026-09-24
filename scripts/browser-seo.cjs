@@ -32,12 +32,16 @@ const server = http.createServer((req, res) => {
     const page = await browser.newPage();
     const errors = [];
     const requests = [];
+    const externalRequests = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.setRequestInterception(true);
     page.on('request', request => {
       if (request.url().startsWith(origin) || request.url().startsWith('data:')) {
         requests.push(request.url()); request.continue();
-      } else request.abort();
+      } else {
+        externalRequests.push(request.url());
+        request.abort();
+      }
     });
     await page.setViewport({ width: 1440, height: 900 });
     for (const route of [...Object.keys(routes), '/missing-seo-test']) {
@@ -49,6 +53,16 @@ const server = http.createServer((req, res) => {
       assert.equal(await page.$$eval('.sidemenu-overlay', elements => elements.length), route.startsWith('/templates/') ? 0 : 1, `menu count: ${route}`);
     }
     console.log('Direct-route checks completed; runtime errors:', errors);
+    for (const width of [320, 390, 768, 1024, 1440]) {
+      await page.setViewport({ width, height: 900 });
+      await page.goto(origin + '/contatti', { waitUntil: 'networkidle0' });
+      await page.waitForFunction(() => [...document.querySelectorAll('.contact .reveal')].every(element => Number(getComputedStyle(element).opacity) === 1));
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), `contact overflow at ${width}`);
+      assert.equal(await page.$$eval('form[name="contatti"]', elements => elements.length), 0);
+      assert.ok(!externalRequests.some(url => /^https:\/\/(app\.)?cal\.com\//.test(url)), 'Cal loaded before booking interaction');
+      if (width === 390 || width === 1440) await page.screenshot({ path: `/tmp/contact-${width}.png`, fullPage: true });
+    }
+    await page.setViewport({ width: 1440, height: 900 });
     for (const route of ['/sviluppo-siti-web', '/integrazione-ai', '/webapp']) {
       await page.goto(origin + route, { waitUntil: 'networkidle0' });
       await page.screenshot({ path: `/tmp/service-${route.slice(1)}-desktop.png`, fullPage: true });
@@ -75,7 +89,7 @@ const server = http.createServer((req, res) => {
     await page.locator('.home-hero__actions a[href="/contatti"]').click();
     await page.waitForFunction(title => document.title === title, {}, routes['/contatti'].title);
     assert.equal(await page.$eval('link[rel="canonical"]', element => element.href), 'https://www.alessandroscarimbolo.it/contatti');
-    assert.equal(await page.$eval('form[name="contatti"]:not([hidden])', element => element.method), 'post');
+    assert.ok((await page.$eval('.contact-email a', element => element.href)).startsWith('mailto:'));
     await page.goto(origin + '/templates/sme', { waitUntil: 'networkidle0' });
     await page.locator('.template-detail__cta-stack a[href="#contatto"]').click();
     await page.waitForFunction(() => !document.getElementById('contatto').hasAttribute('inert'));

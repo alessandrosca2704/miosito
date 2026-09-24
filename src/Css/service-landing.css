@@ -136,3 +136,40 @@
   .service-feature .service-secondary-button,
   .service-template-copy .service-secondary-button{width:100%}
 }
+
+/* The disclosure control has no desktop footprint; original text stays visible. */
+.service-detail__toggle{display:none}
+
+@media(max-width:640px){
+  .service-landing{padding-bottom:24px}
+  .service-landing__hero{padding-top:28px;padding-bottom:36px;gap:28px}
+  .service-section{padding-block:32px}
+  .service-section__heading{gap:12px;margin-bottom:24px}
+  .service-landing .service-secondary-button,
+  .service-related a{background:transparent;border-color:transparent;box-shadow:none;padding:10px 0;justify-content:flex-start;text-align:left;text-decoration:underline;text-underline-offset:4px;min-height:44px}
+  .service-landing .service-secondary-button:hover,
+  .service-related a:hover{color:var(--service-accent);background:transparent;transform:none}
+  .service-capabilities{gap:0}
+  .service-capabilities article{padding:20px 0;border:0;border-bottom:1px solid #d5dfeb;border-radius:0;background:transparent}
+  .service-capabilities article:hover{transform:none;box-shadow:none}
+  .service-browser{box-shadow:none}
+  .service-template-stage{padding:16px;gap:16px;box-shadow:none}
+  .service-template-copy{padding:0}
+  .service-template-copy ul{margin:12px 0 16px}
+  .service-steps{margin:24px 0;gap:20px 16px}
+  .service-steps li{gap:12px;padding-top:14px}
+  .service-editorial{gap:0;padding-top:0}
+  .service-detail{padding:12px 0;border-bottom:1px solid #d5dfeb}
+  .service-detail h3{margin:0}
+  .service-detail[data-interactive="true"] .service-detail__title{display:none}
+  .service-detail[data-interactive="true"] .service-detail__toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-height:48px;padding:8px 0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+  .service-detail__toggle span{flex-shrink:0;color:var(--service-accent);font-size:24px}
+  .service-detail[data-collapsed="true"] > p{display:none}
+  .service-detail > p{padding:8px 0 12px}
+  .service-feature{padding:24px;margin-bottom:32px;gap:16px}
+  .service-feature__mark{display:none}
+  .service-feature{grid-template-columns:1fr}
+  .service-final{padding:32px 20px}
+  .service-final > p:not(.secondary-kicker){margin:16px auto 20px}
+  .service-related{padding:20px 0;gap:4px;align-items:flex-start}
+}

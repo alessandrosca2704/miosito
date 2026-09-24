@@ -1,5 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
+// Match CRA's build-time environment when rendering source on the server.
+process.env.NODE_ENV = 'production';
+require('react-scripts/config/env');
 require('./register-source.cjs');
 const React = require('react');
 const { renderToString } = require('react-dom/server');

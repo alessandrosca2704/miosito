@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { serviceDetails } from "../../data/serviceDetails";
 import { templates } from "../../data/templates";
@@ -40,6 +40,18 @@ const presentation = {
     prompt: "Raccontami come lavori oggi e quali passaggi vorresti rendere più semplici.",
   },
 };
+
+function ApproachDetail({ section }) {
+  const [expanded, setExpanded] = useState(false);
+  const [interactive, setInteractive] = useState(false);
+  const id = useId();
+  // Without JavaScript the original explanations remain readable.
+  useEffect(() => setInteractive(true), []);
+  return <article className="service-detail" data-interactive={interactive} data-collapsed={interactive && !expanded}>
+    <h3><span className="service-detail__title">{section.title}</span><button className="service-detail__toggle" type="button" aria-expanded={expanded} aria-controls={id} onClick={() => setExpanded(!expanded)}>{section.title}<span aria-hidden="true">{expanded ? "−" : "+"}</span></button></h3>
+    <p id={id}>{section.text}</p>
+  </article>;
+}
 
 function BrowserFrame({ children, label, className = "" }) {
   return <div className={`service-browser ${className}`}>
@@ -107,7 +119,7 @@ export default function ServiceLanding({ service }) {
     <div className="secondary-container">
       {isWebsite && <TemplateShowcase />}
       <section className="service-section" aria-labelledby="possibilities-heading"><div className="service-section__heading"><div><p className="secondary-kicker">Possibilità concrete</p><h2 id="possibilities-heading">Cosa possiamo realizzare.</h2></div></div><div className="service-capabilities">{design.capabilities.map(([title, text], i) => <article key={title}><span className="service-card-number" aria-hidden="true">0{i + 1} /</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
-      <section className="service-section service-approach" id="approccio" aria-labelledby="approach-heading"><div className="service-section__heading"><div><p className="secondary-kicker">Il progetto, passo dopo passo</p><h2 id="approach-heading">Come prende forma.</h2></div><p>Un percorso condiviso: definiamo le priorità e verifichiamo le scelte prima di ampliare il progetto.</p></div><ol className="service-steps">{design.steps.map((step, i) => <li key={step}><span aria-hidden="true">0{i + 1}</span><strong>{step}</strong></li>)}</ol><div className="service-editorial">{articles.map(section => <article key={section.title}><h3>{section.title}</h3><p>{section.text}</p></article>)}</div></section>
+      <section className="service-section service-approach" id="approccio" aria-labelledby="approach-heading"><div className="service-section__heading"><div><p className="secondary-kicker">Il progetto, passo dopo passo</p><h2 id="approach-heading">Come prende forma.</h2></div><p>Un percorso condiviso: definiamo le priorità e verifichiamo le scelte prima di ampliare il progetto.</p></div><ol className="service-steps">{design.steps.map((step, i) => <li key={step}><span aria-hidden="true">0{i + 1}</span><strong>{step}</strong></li>)}</ol><div className="service-editorial">{articles.map(section => <ApproachDetail key={section.title} section={section} />)}</div></section>
       <section className="service-feature"><div className="service-feature__mark" aria-hidden="true">{service === "ai" ? "✦" : service === "webapp" ? <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M5 21V3h10v18M15 9h4v12M3 21h18M9 21v-4h2v4M8 6h1m2 0h1M8 10h1m2 0h1M8 14h1m2 0h1M17 12v2m0 2v2" /></svg> : "↗"}</div><div><p className="secondary-kicker">{service === "webapp" ? "Laboratorio · In sviluppo" : "Dal progetto alla pratica"}</p><h2>{feature.title}</h2><p>{feature.text}</p>{service === "ai" ? <button className="service-secondary-button" type="button" onClick={() => window.dispatchEvent(new CustomEvent("open-chat-assistant"))}>Apri l’assistente del sito ↗</button> : service === "webapp" ? <a className="service-secondary-button" href="https://github.com/alessandrosca2704/app-condomini" target="_blank" rel="noopener noreferrer">Segui lo sviluppo su GitHub ↗</a> : <Link className="service-secondary-button" to="/portfolio">Esplora il portfolio →</Link>}</div></section>
       <section className="service-final"><p className="secondary-kicker">Parliamone</p><h2>{design.cta}</h2><p>{design.prompt}</p><Link className="btn" to="/contatti">Raccontami il tuo progetto <span aria-hidden="true">↗</span></Link></section>
       <nav className="service-related" aria-label="Servizi correlati"><span>Continua a esplorare</span><Link to={content.related.to}>{content.related.label} →</Link><Link to="/servizi">Tutti i servizi →</Link></nav>

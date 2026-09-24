@@ -13,13 +13,13 @@ export default function ServicesRecentProjects() {
       <div className="services-section-heading services-section-heading--split reveal">
         <div>
           <p className="secondary-kicker">Progetti recenti</p>
-          <h2 id="services-projects-title">Esempi concreti di soluzioni gia portate online.</h2>
-          <p>
+          <h2 id="services-projects-title"><span className="services-desktop-only">Esempi concreti di soluzioni gia portate online.</span><span className="services-mobile-only">Un progetto realizzato</span></h2>
+          <p className="services-desktop-only">
             Una selezione di lavori coerenti con i servizi: siti, web app e
             strumenti digitali costruiti attorno a esigenze reali.
           </p>
         </div>
-        <Link to="/portfolio" className="services-text-link">Apri portfolio</Link>
+        <Link to="/portfolio" className="services-text-link services-desktop-only">Apri portfolio</Link>
       </div>
 
       <div className="services-recent__grid">
@@ -27,6 +27,7 @@ export default function ServicesRecentProjects() {
           <PortfolioCard headingLevel="h3" key={project.id} project={project} index={index} />
         ))}
       </div>
+      <Link to="/portfolio" className="services-mobile-only services-mobile-portfolio">Vedi tutti i progetti →</Link>
     </section>
   );
 }

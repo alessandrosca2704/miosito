@@ -40,9 +40,10 @@ export default function ServicesHero() {
           <p className="secondary-kicker">Servizi digitali per PMI</p>
           <h1 id="services-title">Soluzioni su misura per PMI</h1>
           <p className="services-hero__lead">
-            Dallo <strong>sviluppo web</strong> alle <strong>soluzioni IA</strong>:
+            <span className="services-desktop-only">Dallo <strong>sviluppo web</strong> alle <strong>soluzioni IA</strong>:
             progetto, realizzo e rendo disponibili online strumenti semplici,
-            veloci e scalabili.
+            veloci e scalabili.</span>
+            <span className="services-mobile-only">Siti web, applicazioni e IA per semplificare il lavoro della tua attività.</span>
           </p>
 
           <ul className="services-benefits" aria-label="Vantaggi principali">
