@@ -4,10 +4,20 @@
   "private": true,
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
+    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/interaction": "^6.1.20",
+    "@fullcalendar/list": "^6.1.20",
+    "@fullcalendar/luxon3": "^6.1.20",
+    "@fullcalendar/react": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20",
+    "@netlify/blobs": "^11.1.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "bcryptjs": "^3.0.3",
+    "luxon": "^3.7.2",
     "motion": "^12.23.12",
     "pdfjs-dist": "^3.11.174",
     "react": "^19.1.1",
@@ -23,15 +33,37 @@
     "eject": "react-scripts eject",
     "seo:assets": "node scripts/seo-assets.cjs",
     "prebuild": "npm run seo:assets",
-    "lint": "eslint src scripts --ext .js,.jsx,.cjs",
+    "lint": "eslint src scripts server/newstyle netlify/functions/newstyle*.ts tests/newstyle --ext .js,.jsx,.cjs,.ts,.tsx",
     "test:seo": "node scripts/verify-seo.cjs",
     "postbuild": "npm run test:seo",
-    "test:browser": "node scripts/browser-seo.cjs"
+    "test:browser": "node scripts/browser-seo.cjs",
+    "test:newstyle": "tsx --test tests/newstyle/*.test.ts",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json --noEmit",
+    "test:newstyle:browser": "node scripts/newstyle-browser.cjs",
+    "newstyle:activation-hash": "node scripts/newstyle-activation.cjs",
+    "test:newstyle:ui": "react-scripts test --watchAll=false --runInBand --watch=false src/features/newstyle",
+    "verify:newstyle": "npm run lint && npm run typecheck && npm run test:newstyle && npm run test:newstyle:ui"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "server/**/*.ts",
+          "netlify/functions/*.ts",
+          "tests/newstyle/*.ts",
+          "scripts/*.cjs"
+        ],
+        "env": {
+          "node": true
+        },
+        "rules": {
+          "no-restricted-globals": "off"
+        }
+      }
     ]
   },
   "browserslist": {
@@ -47,6 +79,12 @@
     ]
   },
   "devDependencies": {
-    "puppeteer": "^24.29.1"
+    "@types/luxon": "^3.7.5",
+    "@types/node": "^20.19.43",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "puppeteer": "^24.29.1",
+    "tsx": "^4.23.15",
+    "typescript": "^4.9.5"
   }
 }

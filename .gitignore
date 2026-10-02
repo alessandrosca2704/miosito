@@ -26,3 +26,8 @@ yarn-error.log*
 
 # Local development and QA artifacts
 /tmp/
+
+# Server-only local secrets
+.env
+.env.*
+!.env.example

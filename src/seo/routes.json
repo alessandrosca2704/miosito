@@ -13,5 +13,6 @@
   "/templates/nonprofit": {"title":"Demo sito per associazioni | Alessandro Scarimbolo","description":"Esempio dimostrativo di sito per associazioni: missione, iniziative e partecipazione. Eventi, persone e numeri sono contenuti illustrativi.","label":"Demo associazioni","noindex":true},
   "/templates/sme": {"title":"Demo landing per PMI e startup | Alessandro Scarimbolo","description":"Esempio dimostrativo di landing B2B con funzionalità, pacchetti e contatto. Clienti, risultati e prezzi sono illustrativi.","label":"Demo PMI","noindex":true},
   "/templates/retail": {"title":"Demo sito per negozi e locali | Alessandro Scarimbolo","description":"Esempio dimostrativo di sito per negozi, boutique e locali: catalogo, orari e mappa. Prodotti e informazioni commerciali sono illustrativi.","label":"Demo negozi","noindex":true},
-  "/bustapaga": {"title":"Controllo busta paga FS | Alessandro Scarimbolo","description":"Strumento di confronto tra diario dei servizi e busta paga FS con elaborazione locale dei PDF nel browser.","label":"Controllo busta paga","noindex":true}
+  "/bustapaga": {"title":"Controllo busta paga FS | Alessandro Scarimbolo","description":"Strumento di confronto tra diario dei servizi e busta paga FS con elaborazione locale dei PDF nel browser.","label":"Controllo busta paga","noindex":true},
+  "/newstyleparrucchiere": {"title":"NewStyle | Agenda riservata","description":"Area riservata NewStyle Parrucchiere.","label":"NewStyle","noindex":true}
 }

@@ -406,6 +406,14 @@ Start the app at `http://localhost:3000`, ensure Chromium can launch, and verify
 
 ## Security and Privacy
 
+### NewStyle Architecture
+
+NewStyle is in a non-destructive transition. The web UI at `/newstyleparrucchiere` remains available as a reference, while the target client is a standalone React + Vite + Capacitor Android app. The future app calls `https://alessandroscarimbolo.it/api/newstyle/*`; it never calls Cal.com directly.
+
+The API is implemented by Netlify Functions. Cal.com credentials and the activation-code hash remain server-side. A device is activated once with `POST /api/newstyle/device/activate`; the server returns a high-entropy device token once, and stores only its SHA-256 hash in Netlify Blobs. The Android client will store the token through an Android Keystore-backed `DeviceTokenStorage` adapter.
+
+Configure `NEWSTYLE_ALLOWED_ORIGINS` with the exact Capacitor origin (`https://localhost` for the planned Android setup) and use `VITE_API_BASE_URL` only as public client configuration. The current web session auth is transitional and will be removed only after the signed APK is verified.
+
 - Keep credentials in server-side environment variables.
 - Treat everything in `public/` as publicly downloadable.
 - Avoid logging chat messages or personal information without a retention policy.
@@ -442,3 +450,177 @@ For projects, collaboration, or technical services, use the deployed contact pag
 [www.alessandroscarimbolo.it/contatti](https://www.alessandroscarimbolo.it/contatti)
 
 For code issues, include reproduction steps, the affected route, browser and Node versions, and sanitized logs. Never include API keys, payroll documents, or personal data.
+
+## NewStyle Admin
+
+Area privata: `/newstyleparrucchiere`. React/TypeScript → Netlify Function
+`newstyle` → Cal.com API v2. Nessun database: Cal.com conserva gli appuntamenti.
+Il frontend usa cookie HttpOnly e non riceve chiavi o token. Le tre viste sono
+Oggi, Agenda (FullCalendar) e Da confermare. Conferma/rifiuto aggiornano Cal.com,
+ricaricano la vista e invalidano i dati quando si cambia sezione.
+
+### Configurazione server
+
+Configurare in Netlify, nelle environment variables con scope **Functions**:
+
+| Variabile | Uso |
+| --- | --- |
+| `CAL_API_KEY` | Chiave dell'account Cal.com proprietario degli appuntamenti NewStyle |
+| `NEWSTYLE_ADMIN_USERNAME` | Unico amministratore |
+| `NEWSTYLE_ADMIN_PASSWORD_HASH` | Hash bcrypt, generato con il comando sotto |
+| `NEWSTYLE_SESSION_SECRET` | Segreto casuale di almeno 32 caratteri |
+| `NEWSTYLE_CAL_EVENT_TYPE_IDS` | ID positivi dei servizi NewStyle, separati da virgole; obbligatori salvo opt-in esplicito sotto |
+| `NEWSTYLE_CAL_ALLOW_ALL_EVENTS` | Default `false`; `true` autorizza esplicitamente tutto l’account quando non sono configurati ID |
+| `CAL_API_BASE_URL` | Facoltativa: default `https://api.cal.com/v2`; solo HTTPS |
+
+Non utilizzare prefissi `VITE_` o `REACT_APP_`. Non inserire credenziali nei file
+versionati. `.env.example` contiene segreti vuoti e impostazioni di esempio; `.env` è ignorato da Git.
+Per generare l'hash senza password nella cronologia della shell:
+
+```sh
+node scripts/newstyle-password.cjs
+node -e "console.log(require('node:crypto').randomBytes(48).toString('base64url'))"
+```
+
+Il primo comando chiede la password senza mostrarla e stampa l'hash; il secondo
+stampa il segreto di sessione. Conservare i risultati solo nelle variabili server.
+Se si usa `.env`, racchiudere l'hash bcrypt tra apici singoli per conservare i `$`.
+
+### Cal.com
+
+Nell'account dedicato NewStyle, aprire Settings → Developer → API keys e creare
+una chiave. La chiave deve poter leggere gli appuntamenti e i tipi di evento,
+e confermare/rifiutare le prenotazioni dell'account. Configurare i servizi e gli
+orari direttamente in Cal.com, con timezone **Europe/Rome**, e attivare la
+richiesta di conferma negli eventi interessati (confirmation policy).
+Configurare `NEWSTYLE_CAL_EVENT_TYPE_IDS`: il filtro si applica a lista, dettaglio
+e mutazioni. In assenza di ID, il server blocca le operazioni prima di chiamare
+Cal.com. Solo per un account interamente dedicato è possibile autorizzare tutto
+l’account con `NEWSTYLE_CAL_ALLOW_ALL_EVENTS=true`. ID malformati bloccano
+comunque l’accesso; gli ID configurati prevalgono sull’opt-in.
+
+Contratti verificati sulla documentazione ufficiale:
+
+- [Lista prenotazioni](https://cal.com/docs/api-reference/v2/bookings/get-all-bookings): `2026-05-01`, cursori, `limit`, `afterStart`, `beforeEnd`, filtro `unconfirmed`.
+- [Dettaglio](https://cal.com/docs/api-reference/v2/bookings/get-a-booking), [conferma](https://cal.com/docs/api-reference/v2/bookings/confirm-a-booking) e [rifiuto](https://cal.com/docs/api-reference/v2/bookings/decline-a-booking): `2026-02-25`.
+- [Titolo servizio](https://cal.com/docs/api-reference/v2/event-types/get-an-event-type): `2026-06-12`. L'oggetto evento della prenotazione contiene ID/slug; il titolo viene letto dall'evento.
+
+Le versioni sono fissate nel service layer; autenticazione `Authorization: Bearer`.
+Fetch server-side evita un SDK aggiuntivo per queste sole operazioni.
+
+### Sviluppo e test locale
+
+Richiede Node 20 o successivo.
+
+```sh
+npm ci --legacy-peer-deps
+cp .env.example .env
+# Compilare .env con credenziali di un account Cal.com di prova.
+npm run verify:newstyle
+CI=true npm test -- --watchAll=false --runInBand
+npm run build
+npm run test:newstyle:browser
+npx netlify-cli dev
+```
+
+Aprire `http://localhost:8888/newstyleparrucchiere`. Usare Netlify Dev, perché
+`npm start` da solo non serve le Functions. Netlify Dev imposta `NETLIFY_DEV=true`
+per consentire il cookie su HTTP locale; in deploy il cookie è sempre Secure.
+Se la CLI richiede il framework, scegliere Create React App, comando `npm start`,
+porta applicazione 3000 e porta proxy 8888.
+
+I test `test:newstyle` simulano tutte le risposte Cal.com: autenticazione valida e
+fallita, sessioni alterate, logout, API senza sessione, controllo origine, ambito,
+mapper, paginazione, conferma/rifiuto, errori, timeout, rate limit e ora legale.
+Non creano o modificano appuntamenti reali. I test UI verificano recupero dagli
+errori di rendering, paginazione, richieste obsolete e conservazione dei dati
+in caso di refresh fallito. Il test browser serve la build e usa i veri handler
+HTTP con cookie, simulando soltanto Cal.com: include risposta persa dopo una
+scrittura, storico su più pagine, ritorno al mese selezionato, errori HTML 200 e
+leggibilità degli appuntamenti da 15 minuti. Non simula l’infrastruttura Netlify.
+La build Netlify è preceduta da lint (anche TypeScript), typecheck e test NewStyle.
+
+### Collaudo Netlify / produzione
+
+1. Configurare le variabili nello scope Functions per il contesto di deploy
+   desiderato, poi eseguire un nuovo deploy con la procedura abituale del sito.
+2. Aprire `https://alessandroscarimbolo.it/newstyleparrucchiere` in finestra privata:
+   deve apparire il login. Verificare che credenziali errate siano rifiutate.
+3. Accedere, fare refresh diretto e verificare la persistenza della sessione.
+   Controllare in DevTools il cookie `newstyle_session`: HttpOnly, Secure,
+   SameSite=Strict, Path=/ e durata 7 giorni.
+4. Con un appuntamento di prova predisposto consapevolmente in Cal.com,
+   verificare Oggi e Agenda su smartphone e desktop, orari italiani e dettagli.
+   Preparare due richieste da confermare: confermarne una e rifiutare l'altra.
+   Controllare il risultato in tutte le viste e nell'account Cal.com.
+5. Verificare il pulsante Annulla nel dialogo di rifiuto, gli errori di rete,
+   il caricamento di altre pagine e la navigazione del calendario.
+6. Uscire, fare refresh: deve tornare il login. In finestra privata,
+   `/api/newstyle/bookings` deve rispondere 401. Le richieste del browser devono
+   andare solamente a `/api/newstyle`, senza chiavi Cal.com nei payload o bundle.
+7. Aprire home, contatti, portfolio e una route inesistente: devono mantenere
+   il comportamento precedente. La route NewStyle ha noindex ed è esclusa dalla sitemap.
+
+### Limiti V1
+
+Pagine da 100 appuntamenti con pulsante esplicito “Carica altri appuntamenti”;
+Agenda carica il range visibile (massimo 45 giorni per richiesta), non lo storico
+intero. Le richieste pendenti seguono il filtro `unconfirmed` di Cal.com, che
+ancora la ricerca a circa un'ora prima del momento corrente. Gli appuntamenti
+passati restano consultabili tramite Agenda. Un refresh manuale aggiorna le
+modifiche effettuate esternamente; non sono previsti webhook o polling continuo.
+
+Il login usa la Function dedicata `newstyle-login`, con rate limit Netlify di
+10 richieste/minuto per IP e dominio, valido anche sul suo URL diretto. Il vecchio
+router non accetta login. Il contatore locale aggiuntivo limita 10 tentativi
+falliti o contemporanei in 15 minuti per istanza; un accesso riuscito azzera i
+fallimenti locali. La regola Netlify conta anche gli accessi riusciti, opera tra
+istanze e può impiegare fino a 10 secondi ad applicarsi; non è un limite totale
+contro attacchi distribuiti da molti IP.
+
+Dopo il deploy, controllare la validazione della regola nei log di post-processing
+Netlify e verificare una risposta 429 sia sul percorso API sia sull’URL diretto:
+una regola invalida può non far fallire il deploy. Questo controllo richiede
+l’infrastruttura pubblicata e non è coperto dal server HTTP locale.
+Riferimento: [rate limiting Netlify](https://docs.netlify.com/manage/security/secure-access-to-sites/rate-limiting/).
+
+La sessione firmata è stateless: logout elimina il cookie dal browser;
+la revoca generale si effettua ruotando il segreto o le credenziali admin.
+Non esiste revoca individuale di una copia già sottratta del cookie prima della
+scadenza. Nessun dato personale viene scritto nei log applicativi.
+
+Aggiornamento mobile NewStyle: su smartphone Agenda si apre in **Elenco**
+giornaliero, con orario, cliente, servizio e stato interamente leggibili. **Orari**
+apre la griglia a intervalli di 15 minuti, con righe più alte. Su desktop resta
+la settimana. Oggi e calendario escludono le richieste rifiutate e annullate.
+Il pulsante **Storico richieste** in Agenda mostra confermate, rifiutate e
+annullate di tutte le date, indipendentemente dal periodo visualizzato nel
+calendario, con filtro per stato e caricamento progressivo. L'ordine è per data
+dell'appuntamento decrescente; le confermate includono anche appuntamenti futuri.
+Lo storico riflette lo stato attuale conservato da Cal.com, non un registro delle
+singole modifiche. Il filtro si applica a ciascuna pagina: quando sono disponibili
+altre pagine, usare “Carica altri appuntamenti” anche se quella corrente non ha
+corrispondenze. Nessuna prenotazione viene cancellata da Cal.com.
+
+### Recupero e limiti delle chiamate NewStyle
+
+Le risposte JSON vengono validate nel server e nel browser; HTML con status 200,
+date e contatti malformati producono un errore leggibile. Un error boundary offre
+il ricaricamento se un componente fallisce. Il client limita ogni richiesta,
+lettura del corpo compresa, a 30 secondi. Il server usa un budget di 20 secondi
+per le letture e 25 per le scritture, con chiamate singole fino a 8 secondi.
+Il recupero dei titoli servizi usa al massimo tre chiamate contemporanee e
+2,5 secondi complessivi, cache limitata per account (5 minuti, 30 secondi per
+errori); se non riesce, resta visibile il titolo della prenotazione.
+
+Una conferma/rifiuto con risposta persa non viene ripetuta automaticamente:
+il server e, se necessario, il client rileggono lo stato. Se non è verificabile,
+l’interfaccia blocca altre modifiche e propone “Verifica esito”. Uno stato già
+coerente con la richiesta restituisce successo senza una seconda scrittura.
+Questa riconciliazione non costituisce una transazione: modifiche concorrenti
+esterne restano possibili e lo stato letto dipende dalla consistenza di Cal.com.
+
+Agenda conserva data e tipo di vista durante il passaggio allo storico. La
+griglia usa tre righe compatte per gli eventi brevi; nomi lunghi possono avere
+ellissi, con dettaglio completo apribile. Su smartphone la vista iniziale resta
+l’elenco leggibile a larghezza intera.

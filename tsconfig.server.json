@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "module": "commonjs", "types": ["node"] },
+  "include": [
+    "server/**/*.ts",
+    "netlify/functions/newstyle*.ts",
+    "tests/newstyle/**/*.ts"
+  ]
+}

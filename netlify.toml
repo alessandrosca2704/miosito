@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "npm run verify:newstyle && npm run build"
   publish = "build"
 
 [build.environment]
@@ -33,3 +33,47 @@
 # Keep the explicit extensionless routes and canonical URLs stable.
 [build.processing.html]
   pretty_urls = false
+
+# Dedicated login endpoint; its function config applies edge rate limiting.
+[[redirects]]
+  from = "/api/newstyle/auth/login"
+  to = "/.netlify/functions/newstyle-login"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/newstyle/device/activate"
+  to = "/.netlify/functions/newstyle-device-activate"
+  status = 200
+  force = true
+
+# Private NewStyle API; preserve explicit portfolio page routing.
+[[redirects]]
+  from = "/api/newstyle/*"
+  to = "/.netlify/functions/newstyle/:splat"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/newstyleparrucchiere"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/api/newstyle/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/newstyleparrucchiere/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/newstyleparrucchiere.html"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"

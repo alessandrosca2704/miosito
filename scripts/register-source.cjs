@@ -11,10 +11,13 @@ function loadSource(module, filename) {
     presets: [
       [require.resolve('@babel/preset-env'), { targets: { node: 'current' }, modules: 'commonjs' }],
       [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
+      require.resolve('@babel/preset-typescript'),
     ],
   });
   module._compile(result.code, filename);
 }
 require.extensions['.js'] = loadSource;
 require.extensions['.jsx'] = loadSource;
+require.extensions['.ts'] = loadSource;
+require.extensions['.tsx'] = loadSource;
 require.extensions['.css'] = () => {};

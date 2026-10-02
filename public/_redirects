@@ -15,6 +15,7 @@
 /templates/sme.html /templates/sme 301!
 /templates/retail.html /templates/retail 301!
 /bustapaga.html /bustapaga 301!
+/newstyleparrucchiere.html /newstyleparrucchiere 301!
 /iot /servizi 301!
 /web-app /webapp 301!
 /portfolio/webapp /webapp 301!
@@ -33,4 +34,5 @@
 /templates/sme /templates/sme.html 200!
 /templates/retail /templates/retail.html 200!
 /bustapaga /bustapaga.html 200!
+/newstyleparrucchiere /newstyleparrucchiere.html 200!
 # Real files and Netlify Functions remain available; missing paths use 404.html.

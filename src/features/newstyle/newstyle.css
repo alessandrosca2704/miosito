@@ -1,0 +1,605 @@
+.newstyle {
+  --ns-red: #c65a4d;
+  --ns-red-dark: #934039;
+  --ns-red-soft: #fff1ed;
+  --ns-ink: #2a211f;
+  --ns-muted: #746864;
+  --ns-line: #e6dcd7;
+  min-height: 100dvh;
+  background: #faf7f5;
+  color: var(--ns-ink);
+  font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+  color-scheme: light;
+}
+.newstyle * {
+  box-sizing: border-box;
+}
+.newstyle h1,
+.newstyle h2,
+.newstyle h3,
+.newstyle p {
+  margin: 0 0 12px;
+}
+.newstyle h1 {
+  font-size: 22px;
+  font-weight: 500;
+}
+.newstyle h2 {
+  font-size: clamp(26px, 4vw, 36px);
+  letter-spacing: -0.04em;
+}
+.newstyle h3 {
+  font-size: 20px;
+}
+.newstyle button {
+  font: inherit;
+  cursor: pointer;
+  min-height: 48px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 10px 18px;
+  background: var(--ns-red);
+  color: #fff;
+  font-weight: 600;
+}
+.newstyle button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.newstyle button:focus-visible,
+.newstyle input:focus-visible {
+  outline: 3px solid var(--ns-red);
+  outline-offset: 3px;
+}
+.newstyle .ns-secondary {
+  background: transparent;
+  border-color: #bdbdbd;
+  color: var(--ns-ink);
+}
+.ns-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px max(20px, calc((100vw - 1100px) / 2));
+  border-bottom: 1px solid var(--ns-line);
+  background: #fff;
+}
+.ns-brand {
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  color: var(--ns-red);
+}
+.ns-header h1 {
+  margin: 4px 0 0;
+}
+.ns-content {
+  max-width: 1140px;
+  margin: auto;
+  padding: 30px 20px calc(120px + env(safe-area-inset-bottom));
+}
+.ns-login {
+  max-width: 460px;
+  margin: 40px auto;
+  padding: 24px;
+}
+.ns-login h2 {
+  font-size: 42px;
+  line-height: 1.1;
+  margin: 22px 0;
+}
+.ns-login form {
+  margin: 30px 0;
+  display: grid;
+  gap: 20px;
+}
+.ns-login label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+.ns-login input {
+  width: 100%;
+  border: 1px solid #aeb9b1;
+  border-radius: 10px;
+  padding: 14px;
+  font: inherit;
+  background: #fff;
+  color: var(--ns-ink);
+}
+.ns-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--ns-red-dark);
+}
+.ns-muted {
+  color: var(--ns-muted);
+  font-size: 14px;
+}
+.ns-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.ns-section-heading h2 {
+  margin-bottom: 6px;
+}
+.ns-cards {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
+}
+.ns-card {
+  border: 1px solid var(--ns-line);
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  overflow-wrap: anywhere;
+}
+.ns-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.ns-time {
+  font-size: 25px;
+  font-variant-numeric: tabular-nums;
+}
+.ns-status {
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #ededed;
+  color: var(--ns-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+.ns-status.ns-pending {
+  background: #fff1d7;
+  color: #755119;
+}
+.ns-status.ns-rejected,
+.ns-status.ns-cancelled {
+  background: var(--ns-red-soft);
+  color: var(--ns-red-dark);
+}
+.ns-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.ns-actions button {
+  flex: 1;
+}
+.newstyle .ns-link {
+  padding: 8px 0;
+  background: transparent;
+  color: var(--ns-red-dark);
+  text-decoration: underline;
+}
+.ns-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  border-top: 1px solid var(--ns-line);
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+}
+.newstyle .ns-bottom button {
+  width: min(33.33%, 230px);
+  background: transparent;
+  color: var(--ns-muted);
+  font-size: 14px;
+  padding: 8px 4px;
+}
+.newstyle .ns-bottom button[aria-current] {
+  background: var(--ns-red-soft);
+  color: var(--ns-red-dark);
+}
+.ns-bottom span {
+  display: block;
+  font-size: 25px;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+.ns-empty {
+  padding: 40px 20px;
+  text-align: center;
+  background: #fff;
+  border: 1px dashed #c9c9c9;
+  border-radius: 8px;
+}
+.ns-error,
+.ns-success {
+  padding: 16px;
+  margin: 16px auto;
+  max-width: 1100px;
+  border-radius: 8px;
+  background: var(--ns-red-soft);
+  color: var(--ns-red-dark);
+}
+.ns-error button {
+  margin: 8px;
+}
+.ns-success {
+  background: #f0f0f0;
+  color: var(--ns-ink);
+}
+.ns-more {
+  text-align: center;
+  margin-top: 24px;
+}
+.ns-dialog {
+  width: min(94vw, 520px);
+  max-height: 85dvh;
+  padding: 0;
+  border: 1px solid #d9ded8;
+  border-radius: 18px;
+  box-shadow: 0 20px 80px #0003;
+}
+.ns-dialog::backdrop {
+  background: #17241dbb;
+}
+.ns-dialog .newstyle {
+  min-height: 0;
+  padding: 24px;
+  overflow-wrap: anywhere;
+}
+.ns-dialog .ns-card {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.ns-calendar {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--ns-line);
+}
+.newstyle .fc {
+  --fc-border-color: var(--ns-line);
+  --fc-today-bg-color: var(--ns-red-soft);
+  --fc-button-bg-color: var(--ns-red);
+  --fc-button-border-color: var(--ns-red);
+  --fc-button-hover-bg-color: var(--ns-red-dark);
+  --fc-button-hover-border-color: var(--ns-red-dark);
+  font-size: 15px;
+}
+.newstyle .fc .fc-toolbar-title {
+  font-size: 20px;
+  letter-spacing: -0.03em;
+}
+.newstyle .fc .fc-button {
+  min-height: 44px;
+  font-size: 14px;
+  padding: 8px;
+}
+.newstyle .fc-event {
+  background: var(--ns-ink);
+  border-color: var(--ns-ink);
+  padding: 3px;
+  cursor: pointer;
+}
+.newstyle .fc .ns-event-pending {
+  background: var(--ns-red);
+  border-color: var(--ns-red);
+}
+.newstyle .fc .ns-event-cancelled,
+.newstyle .fc .ns-event-rejected {
+  background: #777;
+  border-color: #777;
+}
+.newstyle .fc-event-main {
+  overflow: hidden;
+}
+.newstyle .fc-event small {
+  font-size: 14px;
+}
+.newstyle .fc a {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 700px) {
+  .ns-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--ns-red);
+  }
+  .ns-content {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .ns-calendar {
+    padding: 8px;
+  }
+  .newstyle .fc .fc-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .newstyle .fc .fc-toolbar-chunk:nth-child(2) {
+    order: -1;
+    width: 100%;
+  }
+  .newstyle .fc .fc-toolbar-title {
+    font-size: 18px;
+  }
+  .ns-dialog {
+    margin: auto auto 12px;
+  }
+  .ns-actions {
+    flex-wrap: wrap;
+  }
+  .ns-login {
+    margin-top: 20px;
+  }
+}
+
+/* The mobile agenda is a readable daily list; the time grid remains optional. */
+.ns-history-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.ns-history-controls {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.ns-history-controls label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+}
+.ns-history-controls select {
+  font: inherit;
+  color: var(--ns-ink);
+  background: white;
+  padding: 14px;
+  border: 1px solid #bdbdbd;
+  border-radius: 10px;
+  min-height: 52px;
+  width: 100%;
+}
+.ns-history-controls select:focus-visible {
+  outline: 3px solid var(--ns-red);
+  outline-offset: 3px;
+}
+.newstyle .fc .fc-button {
+  min-height: 48px;
+  min-width: 48px;
+  font-size: 15px;
+  padding: 10px;
+}
+.newstyle .fc .fc-timegrid-slot {
+  height: 38px;
+}
+.ns-calendar-appointment {
+  display: grid;
+  gap: 3px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.ns-calendar-appointment strong {
+  font-size: 17px;
+}
+.ns-calendar-time {
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+.ns-calendar-status {
+  font-size: 14px;
+  font-weight: 600;
+}
+.newstyle .fc .fc-timegrid-event {
+  padding: 6px;
+  font-size: 15px;
+}
+.newstyle .fc .fc-list {
+  border: 0;
+}
+.newstyle .fc .fc-list-event {
+  background: white;
+  color: var(--ns-ink);
+}
+.newstyle .fc .fc-list-event td {
+  padding: 18px 14px;
+  border-color: #ccd5cd;
+}
+.newstyle .fc .fc-list-event-graphic {
+  display: none;
+}
+.newstyle .fc .fc-list-event-title {
+  border-left: 4px solid var(--ns-ink);
+}
+.newstyle .fc .fc-list-event.ns-event-pending .fc-list-event-title {
+  border-left-color: var(--ns-red);
+}
+.newstyle .fc .fc-list-event:hover td {
+  background: var(--ns-red-soft);
+}
+.newstyle .fc .fc-list-event .ns-calendar-appointment {
+  gap: 6px;
+  font-size: 17px;
+}
+.newstyle .fc .fc-list-event .ns-calendar-appointment strong {
+  font-size: 21px;
+}
+.newstyle .fc .fc-list-event .ns-calendar-time {
+  color: var(--ns-red-dark);
+  font-size: 20px;
+}
+.newstyle .fc .fc-list-event .ns-calendar-status {
+  color: var(--ns-ink);
+  font-size: 15px;
+}
+.newstyle .fc .fc-list-event.ns-event-pending .ns-calendar-status {
+  color: var(--ns-red-dark);
+}
+.newstyle .fc .fc-list-day-cushion {
+  background: var(--ns-ink);
+  color: #fff;
+  padding: 14px;
+}
+.newstyle .fc .fc-list-empty {
+  min-height: 160px;
+  background: #fafafa;
+  font-size: 17px;
+}
+@media (max-width: 700px) {
+  .newstyle .ns-content {
+    padding: 18px 14px calc(96px + env(safe-area-inset-bottom));
+  }
+  .newstyle .ns-section-heading {
+    margin-bottom: 14px;
+  }
+  .newstyle .ns-section-heading button {
+    min-height: 42px;
+    padding: 8px 12px;
+  }
+  .newstyle .ns-calendar {
+    padding: 8px;
+    border-color: #d0d0d0;
+    box-shadow: 0 8px 24px rgba(20, 20, 20, 0.06);
+  }
+  .newstyle .fc .fc-toolbar-title {
+    font-size: 20px;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+  .newstyle .fc .fc-toolbar-chunk {
+    width: 100%;
+  }
+  .newstyle .fc .fc-toolbar-chunk:first-child {
+    display: flex;
+    justify-content: space-between;
+  }
+  .newstyle .fc .fc-toolbar-chunk:last-child .fc-button-group {
+    display: flex;
+    width: 100%;
+  }
+  .newstyle .fc .fc-toolbar-chunk:last-child .fc-button {
+    flex: 1;
+  }
+  .newstyle .fc .fc-toolbar-chunk:last-child .fc-button.fc-button-active {
+    background: var(--ns-ink);
+    border-color: var(--ns-ink);
+  }
+  .newstyle .fc .fc-daygrid-day {
+    background: #fff;
+  }
+  .newstyle .fc .fc-daygrid-day-frame {
+    transition: background-color 160ms ease;
+  }
+  .newstyle .fc .fc-daygrid-day:active .fc-daygrid-day-frame {
+    background: var(--ns-red-soft);
+  }
+  .newstyle .fc .fc-timegrid-slot {
+    height: 48px;
+  }
+  .newstyle .ns-bottom button {
+    font-size: 14px;
+    min-height: 58px;
+    font-weight: 600;
+  }
+  .ns-dialog .newstyle {
+    font-size: 18px;
+    padding: 22px;
+  }
+  .ns-dialog .ns-secondary {
+    width: 100%;
+  }
+  .ns-section-heading {
+    align-items: flex-start;
+  }
+  .ns-section-heading h2 {
+    font-size: 26px;
+    letter-spacing: 0;
+  }
+}
+
+/* Short grid appointments use three compact rows. Full details stay in list/dialog. */
+.ns-calendar-compact {
+  display: grid;
+  gap: 2px;
+  font-size: 15px;
+  line-height: 19px;
+  min-width: 0;
+}
+.ns-calendar-compact > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.newstyle .fc .fc-timegrid-slot {
+  height: 88px;
+}
+.newstyle .fc .fc-timegrid-event {
+  padding: 4px;
+}
+.newstyle .fc .fc-daygrid-event .ns-calendar-compact {
+  font-size: 13px;
+  line-height: 17px;
+}
+.newstyle .fc .fc-daygrid-event {
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .newstyle .fc .fc-daygrid-day-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 5px;
+    padding: 5px 6px;
+    color: var(--ns-ink);
+    font-weight: 700;
+  }
+
+  .newstyle .ns-day-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--ns-red);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(20, 20, 20, 0.18);
+  }
+
+  .newstyle .fc .fc-daygrid-day-frame {
+    min-height: 54px;
+  }
+
+  .newstyle .fc .fc-daygrid-day.fc-day-today {
+    background: var(--ns-red-soft);
+  }
+
+  .newstyle .ns-bottom {
+    box-shadow: 0 -4px 16px rgba(20, 20, 20, 0.06);
+  }
+  .newstyle .ns-bottom button[aria-current] {
+    border-top: 3px solid var(--ns-red);
+    padding-top: 5px;
+  }
+}

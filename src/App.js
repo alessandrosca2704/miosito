@@ -9,7 +9,7 @@ import Portfolio from './Pages/Portfolio';
 import Servizi from './Pages/Servizi';
 import Webapp from './Pages/Web-app';
 import StickyContactBar from './components/StickyContactBar';
-import { lazy, Suspense, useCallback, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import ScrollToTop from './components/ScrollToTop';
 import Templates from './Pages/Templates';
 import ProServicesTemplate from './Pages/templates/ProServicesTemplate';
@@ -23,6 +23,14 @@ import ServiceDetail from './Pages/ServiceDetail';
 import useDocumentMeta from './hooks/useDocumentMeta';
 import { paths } from './data/navigation';
 import useScrollReveal from './hooks/useScrollReveal';
+
+import NewStyleBoundary from './features/newstyle/NewStyleErrorBoundary';
+const NewStylePage = lazy(() => import('./features/newstyle/NewStylePage'));
+function NewStyleEntry() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted ? <NewStyleBoundary><NewStylePage /></NewStyleBoundary> : <main className="secondary-container" aria-busy="true"><h1>NEWSTYLE · Agenda</h1><p>Area riservata NewStyle Parrucchiere. Verifica dell’accesso in corso…</p></main>;
+}
 
 const PayrollCheckerPage = lazy(() => import('./features/bustapaga/PayrollCheckerPage'));
 
@@ -38,7 +46,7 @@ function RevealOnRouteChange() {
 function AppLayout({ isMobileContactOpen, handleMobileContactState, payrollPage }) {
   const { pathname } = useLocation();
   useDocumentMeta(pathname);
-  const hideOnTemplates = pathname.startsWith("/templates/")
+  const hideOnTemplates = pathname.startsWith("/templates/") || pathname === "/newstyleparrucchiere" || pathname === "/newstyleparrucchiere/"
 
   return (
     <>
@@ -65,6 +73,7 @@ function AppLayout({ isMobileContactOpen, handleMobileContactState, payrollPage 
           <Route path='/templates/sme' element={<SmeTemplate />} />
           <Route path='/templates/retail' element={<RetailTemplate />} />
           <Route path='/bustapaga' element={payrollPage || <PayrollCheckerPage />} />
+          <Route path="/newstyleparrucchiere" element={<NewStyleEntry />} />
           <Route path="*" element={<NotFound />} />
       </Routes>
       </Suspense>
