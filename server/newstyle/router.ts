@@ -137,7 +137,11 @@ export async function routeNewStyle(
     }
     if (h.authorization) await authenticateDevice(h.authorization);
     else if (!session(h.cookie))
-      throw new HttpError(401, "Sessione scaduta. Accedi di nuovo.");
+      throw new HttpError(
+        401,
+        h.cookie ? "Sessione scaduta. Accedi di nuovo." : "Token del dispositivo assente.",
+        h.cookie ? "SESSION_EXPIRED" : "DEVICE_TOKEN_MISSING",
+      );
     if (path === "/bookings" && !post) {
       const params = new URLSearchParams();
       Object.entries(event.queryStringParameters || {}).forEach(([k, v]) => {

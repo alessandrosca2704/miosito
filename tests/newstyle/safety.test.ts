@@ -10,7 +10,7 @@ import { calRequest } from "../../server/newstyle/calClient";
 import { serviceTitles } from "../../server/newstyle/serviceTitles";
 import { eventScope } from "../../server/newstyle/scope";
 import { beginLogin } from "../../server/newstyle/auth";
-import { handler as legacy } from "../../netlify/functions/newstyle";
+import legacy from "../../netlify/functions/newstyle";
 import login, { config } from "../../netlify/functions/newstyle-login";
 import bcrypt from "bcryptjs";
 const originalFetch = global.fetch;
@@ -218,17 +218,12 @@ test("legacy login aliases cannot bypass dedicated platform-limited endpoint", a
     "/api/newstyle/auth/login",
     "/.netlify/functions/newstyle/auth/login",
   ]) {
-    const result = await legacy({
-      httpMethod: "POST",
-      path,
-      headers: {
-        host: "example.test",
-        origin: "https://example.test",
-        "content-type": "application/json",
-      },
+    const result = await legacy(new Request("https://example.test" + path, {
+      method: "POST",
+      headers: { origin: "https://example.test", "content-type": "application/json" },
       body: "{}",
-    });
-    assert.equal(result.statusCode, 404);
+    }), { ip: "192.0.2.1" });
+    assert.equal(result.status, 404);
   }
   assert.deepEqual(config.path, [
     "/api/newstyle/auth/login",

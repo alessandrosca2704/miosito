@@ -59,10 +59,10 @@ function checkActivationRate(ip: string) {
 
 export async function activateDevice(activationCode: string, ip: string) {
   if (!activationCode || activationCode.length > 256)
-    throw new HttpError(401, "Codice di attivazione non valido.");
+    throw new HttpError(401, "Codice di attivazione non valido.", "ACTIVATION_CODE_INVALID");
   checkActivationRate(ip);
   if (!(await bcrypt.compare(activationCode, activationHash())))
-    throw new HttpError(401, "Codice di attivazione non valido.");
+    throw new HttpError(401, "Codice di attivazione non valido.", "ACTIVATION_CODE_INVALID");
 
   const token = randomBytes(32).toString("base64url");
   const hash = tokenHash(token);
@@ -79,8 +79,10 @@ export async function activateDevice(activationCode: string, ip: string) {
 
 export async function authenticateDevice(authorization = "") {
   const match = /^Bearer\s+([^\s]+)$/i.exec(authorization);
+  if (!authorization)
+    throw new HttpError(401, "Token del dispositivo assente.", "DEVICE_TOKEN_MISSING");
   if (!match || match[1].length > 512)
-    throw new HttpError(401, "Dispositivo non attivato.", "DEVICE_UNAUTHORIZED");
+    throw new HttpError(401, "Token del dispositivo non valido o revocato.", "DEVICE_UNAUTHORIZED");
   const hash = tokenHash(match[1]);
   const record = (await store().get(`devices/${hash}`, {
     type: "json",
@@ -92,7 +94,7 @@ export async function authenticateDevice(authorization = "") {
     !sameHash(record.tokenHash, hash) ||
     record.revokedAt
   )
-    throw new HttpError(401, "Dispositivo non attivato.", "DEVICE_UNAUTHORIZED");
+    throw new HttpError(401, "Token del dispositivo non valido o revocato.", "DEVICE_UNAUTHORIZED");
   await store().setJSON(
     `devices/${hash}`,
     { ...record, lastUsedAt: new Date().toISOString() },

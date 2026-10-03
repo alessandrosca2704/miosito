@@ -2,7 +2,7 @@ import { test, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import { request } from "../../src/features/newstyle/api";
 import { performBookingAction } from "../../src/features/newstyle/bookingActions";
-import { apiFetch } from "../../src/features/newstyle/deviceApi";
+import { apiFetch, activateDevice } from "../../src/features/newstyle/deviceApi";
 import type { DeviceTokenStorage } from "../../src/features/newstyle/deviceTokenStorage";
 const originalFetch = global.fetch;
 afterEach(() => {
@@ -171,4 +171,20 @@ test("impossible calendar dates are rejected before date formatting", async () =
   ])
     assert.equal(isInstant(value), false);
   assert.equal(isInstant("2028-02-29T10:00:00+01:00"), true);
+});
+
+
+test("invalid activation code preserves existing storage and does not expire device", async () => {
+  let token: string | null = "old-token";
+  const storage: DeviceTokenStorage = {
+    async getToken() { return token; },
+    async setToken(value) { token = value; },
+    async clearToken() { token = null; },
+  };
+  global.fetch = async (_input, options) => {
+    assert.equal((options?.headers as Record<string, string>).Authorization, undefined);
+    return json({ error: "Codice di attivazione non valido.", code: "ACTIVATION_CODE_INVALID" }, 401);
+  };
+  await assert.rejects(activateDevice("test-only-code", { storage }), { code: "ACTIVATION_CODE_INVALID" });
+  assert.equal(token, "old-token");
 });
