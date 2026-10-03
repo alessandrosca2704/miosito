@@ -14,9 +14,12 @@ export default async function activate(
 ): Promise<Response> {
   const path = new URL(request.url).pathname.replace(/\/$/, "");
   if (!config.path.includes(path)) return new Response(null, { status: 404 });
-  if (request.method !== "POST")
-    return new Response(null, { status: 405, headers: { Allow: "POST" } });
-  const reader = request.body?.getReader();
+  if (!['POST', 'OPTIONS'].includes(request.method))
+    return new Response(null, {
+      status: 405,
+      headers: { Allow: "POST, OPTIONS" },
+    });
+  const reader = request.method === "POST" ? request.body?.getReader() : null;
   const chunks: Uint8Array[] = [];
   let size = 0;
   if (reader) {
@@ -39,13 +42,16 @@ export default async function activate(
   headers["x-nf-client-connection-ip"] = context.ip || "unknown";
   const result = await routeNewStyle(
     {
-      httpMethod: "POST",
+      httpMethod: request.method,
       path: "/api/newstyle/device/activate",
       headers,
-      body: Buffer.concat(chunks).toString("utf8"),
+      body: chunks.length ? Buffer.concat(chunks).toString("utf8") : null,
     },
     false,
     true,
   );
-  return new Response(result.body, { status: result.statusCode, headers: result.headers });
+  return new Response(result.statusCode === 204 ? null : result.body, {
+    status: result.statusCode,
+    headers: result.headers,
+  });
 }

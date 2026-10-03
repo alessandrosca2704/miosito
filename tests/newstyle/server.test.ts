@@ -2,6 +2,7 @@ import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import bcrypt from "bcryptjs";
 import { routeNewStyle } from "../../server/newstyle/router";
+import activateDeviceFunction from "../../netlify/functions/newstyle-device-activate";
 import { session, sessionCookie } from "../../server/newstyle/auth";
 import { mapCalBookingToBooking } from "../../server/newstyle/calService";
 import { todayRange, localDate } from "../../src/features/newstyle/dates";
@@ -133,6 +134,36 @@ test("allowed device origin supports CORS preflight", async () => {
   assert.equal(r.statusCode, 204);
   assert.equal(r.headers["Access-Control-Allow-Origin"], "https://localhost");
   delete process.env.NEWSTYLE_ALLOWED_ORIGINS;
+});
+test("device activation function answers the CORS preflight before POST", async () => {
+  process.env.NEWSTYLE_ALLOWED_ORIGINS = "https://localhost";
+  try {
+    const request = new Request(
+      "https://www.alessandroscarimbolo.it/api/newstyle/device/activate",
+      {
+        method: "OPTIONS",
+        headers: {
+          Origin: "https://localhost",
+          "Access-Control-Request-Method": "POST",
+          "Access-Control-Request-Headers": "content-type",
+        },
+      },
+    );
+    const response = await activateDeviceFunction(request, {
+      ip: "192.0.2.5",
+    });
+    assert.equal(response.status, 204);
+    assert.equal(
+      response.headers.get("Access-Control-Allow-Origin"),
+      "https://localhost",
+    );
+    assert.equal(
+      response.headers.get("Access-Control-Allow-Headers"),
+      "Authorization, Content-Type",
+    );
+  } finally {
+    delete process.env.NEWSTYLE_ALLOWED_ORIGINS;
+  }
 });
 test("maps documented booking and attendee fields", () => {
   assert.deepEqual(mapCalBookingToBooking(fixture, "Taglio"), {
