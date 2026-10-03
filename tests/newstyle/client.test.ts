@@ -161,6 +161,47 @@ test("device API clears the token and reports a friendly activation error on 401
   assert.equal(unauthorized, 1);
 });
 
+test("device API trims whitespace around stored tokens before sending them", async () => {
+  const storage: DeviceTokenStorage = {
+    async getToken() {
+      return "  device-token \n";
+    },
+    async setToken() {},
+    async clearToken() {},
+  };
+  global.fetch = async (_input, options) => {
+    assert.equal(
+      (options?.headers as Record<string, string>).Authorization,
+      "Bearer device-token",
+    );
+    return json({ bookings: [] });
+  };
+
+  await apiFetch("/bookings", { storage });
+});
+
+test("activation trims surrounding whitespace and rejects a blank code locally", async () => {
+  global.fetch = async (_input, options) => {
+    assert.deepEqual(JSON.parse(String(options?.body)), {
+      activationCode: "test-only-code",
+    });
+    return json({ deviceToken: "a".repeat(43) });
+  };
+
+  await activateDevice("  test-only-code \n");
+
+  let requested = false;
+  global.fetch = async () => {
+    requested = true;
+    return json({});
+  };
+  await assert.rejects(
+    activateDevice(" \n\t"),
+    { code: "ACTIVATION_CODE_REQUIRED" },
+  );
+  assert.equal(requested, false);
+});
+
 test("impossible calendar dates are rejected before date formatting", async () => {
   const { isInstant } = await import("../../src/features/newstyle/contracts");
   for (const value of [

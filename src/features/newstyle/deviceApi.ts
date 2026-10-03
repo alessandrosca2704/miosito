@@ -33,7 +33,8 @@ export async function apiFetch<T = unknown>(
   const timer = setTimeout(() => controller.abort(), options.timeoutMs ?? 30_000);
   try {
     const activation = path.split("?")[0] === "/device/activate";
-    const token = activation ? null : await storage.getToken();
+    const storedToken = activation ? null : await storage.getToken();
+    const token = storedToken?.trim() || null;
     const headers: Record<string, string> = {};
     if (options.body !== undefined) headers["Content-Type"] = "application/json";
     if (token) headers.Authorization = `Bearer ${token}`;
@@ -80,9 +81,16 @@ export async function activateDevice(
   activationCode: string,
   options: Omit<DeviceApiOptions, "body"> = {},
 ) {
+  const normalizedCode = activationCode.trim();
+  if (!normalizedCode)
+    throw new ApiError(
+      400,
+      "Inserisci un codice di attivazione valido.",
+      "ACTIVATION_CODE_REQUIRED",
+    );
   const result = await apiFetch<unknown>("/device/activate", {
     ...options,
-    body: { activationCode },
+    body: { activationCode: normalizedCode },
   });
   if (!isDeviceActivationResponse(result))
     throw new ApiError(502, "Risposta di attivazione non valida.", "INVALID_RESPONSE");
